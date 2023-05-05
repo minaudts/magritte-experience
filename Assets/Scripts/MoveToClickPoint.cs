@@ -4,34 +4,41 @@ using UnityEngine.InputSystem;
 
 public class MoveToClickPoint : MonoBehaviour
 {
+    [SerializeField] InputActionAsset inputActionAsset;
     private NavMeshAgent agent;
     private Camera cam;
-    [SerializeField] private InputAction clickAction;
+    private InputAction touchPositionAction;
+    private InputAction touchPressAction;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        touchPositionAction = inputActionAsset.FindActionMap("InGame").FindAction("TouchPosition");
+        touchPressAction = inputActionAsset.FindActionMap("InGame").FindAction("TouchPress");
         cam = Camera.main;
     }
 
-    private void OnClick(InputAction.CallbackContext context)
+    public void OnPress(InputAction.CallbackContext context)
     {
+        Vector2 touchPos = touchPositionAction.ReadValue<Vector2>();
         RaycastHit hit;
-        if (Physics.Raycast(cam.ScreenPointToRay(Mouse.current.position.ReadValue()), out hit, 100))
-            {
-                agent.destination = hit.point;
-            }
+        if (Physics.Raycast(cam.ScreenPointToRay(touchPos), out hit, 100))
+        {
+            agent.destination = hit.point;
+        }
     }
 
     private void OnEnable() 
     {
-        clickAction.Enable();
-        clickAction.performed += OnClick;
+        touchPressAction.Enable();
+        touchPositionAction.Enable();
+        touchPressAction.performed += OnPress;
     }
 
     private void OnDisable() 
     {
-        clickAction.performed -= OnClick;
-        clickAction.Disable();
+        touchPressAction.performed -= OnPress;
+        touchPressAction.Disable();
+        touchPositionAction.Disable();
     }
 }
