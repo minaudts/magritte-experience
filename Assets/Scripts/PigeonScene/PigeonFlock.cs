@@ -1,21 +1,20 @@
 using UnityEngine;
 using System.Text;
-
+using System.Collections;
 
 public class PigeonFlock : MonoBehaviour
 {
     [SerializeField] private Transform[] flyDestinations;
     private Transform currentDestination;
-    private Vector3 currentTarget;
     [SerializeField] private float flyingSpeed;
     [SerializeField] private float flyingHeight;
     [SerializeField] private float liftOffSpeed;
     [SerializeField] private float liftOffDistance;
     [SerializeField] private float descendSpeed;
     [SerializeField] private float stoppingDistance;
-    private Transform initialPosition; 
+    private Transform initialPosition;
     private FlockState currentState;
-    private int flightsDone = 0;
+    private int destinationIndex = 0;
     private Pigeon[] pigeons;
     // Start is called before the first frame update
     void Start()
@@ -28,42 +27,25 @@ public class PigeonFlock : MonoBehaviour
 
     private void Update()
     {
-        if(currentState == FlockState.TakingOff)
-        {
-            // Start
-            AscendToFlyingHeight();
-        }
-        else if(currentState == FlockState.Flying)
-        {
-            FlyToDestination();
-        }
-        else if(currentState == FlockState.Landing)
-        {
-            Land();
-        }
+
     }
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name + " entered pigeon flock");
         // Second to last flight, pick 1 pigeon to unparent so it stays where it is
-        if(flightsDone == flyDestinations.Length - 1)
+        if (destinationIndex == flyDestinations.Length - 1)
         {
             PickRandomKeyPigeon();
         }
-        if(flightsDone < flyDestinations.Length)
+        if (destinationIndex < flyDestinations.Length)
         {
-            Debug.Log("Flying to next destination");
             // Start flying when player enters trigger
-            currentState = FlockState.TakingOff;
+            Debug.Log("Flying to next destination");
+            //currentState = FlockState.TakingOff;
             // Destination is endpoint of the flight
-            currentDestination = flyDestinations[flightsDone];
-            // Calculate direction of current transform to destination
-            Vector3 directionToDestination = Vector3.Normalize(currentDestination.position - transform.position);
-            // Target is where flock is flying towards depending on current state
-            currentTarget = new Vector3(transform.position.x, flyingHeight, transform.position.z) + (directionToDestination * liftOffDistance);
-            // Rotate to look at destination
-            transform.LookAt(currentDestination, Vector3.up);
+            currentDestination = flyDestinations[destinationIndex];
+            StartCoroutine(FlyToDestination(currentDestination.position));
         }
     }
 
@@ -73,37 +55,57 @@ public class PigeonFlock : MonoBehaviour
         pigeons[index].MakeKeyPigeon();
     }
 
-    private void AscendToFlyingHeight()
+    private IEnumerator FlyToDestination(Vector3 target)
     {
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, liftOffSpeed * Time.deltaTime);
-        if(Mathf.Abs(transform.position.y - flyingHeight) < 0.01f)
+        // Look at target
+        transform.LookAt(target, Vector3.up);
+        // Get the starting position of the flock
+        Vector3 startPos = transform.position;
+        // Calculate the direction and distance to the target
+        Vector3 direction = (target - startPos).normalized;
+        float distance = Vector3.Distance(startPos, target);
+        // Set target to a point defined by height, diection to target and liftoff distance
+        Vector3 currentTarget = new Vector3(transform.position.x, flyingHeight, transform.position.z) + (direction * liftOffDistance);
+        // Ascend to takeoff height
+        yield return StartCoroutine(AscendToFlyingHeight(currentTarget));
+        // Target is now actual destination but at flying height
+        currentTarget = new Vector3(target.x, flyingHeight, target.z);
+        // Fly at flying height
+        yield return StartCoroutine(FlyAtConstantHeight(currentTarget));
+        // Target is the actual target, with height set to 0 to make sure flock will go to the floor
+        currentTarget = new Vector3(target.x, 0f, target.z);
+        // Descend to landing distance
+        yield return StartCoroutine(Land(currentTarget));
+        destinationIndex++;
+    }
+
+    private IEnumerator AscendToFlyingHeight(Vector3 target)
+    {
+        while (Mathf.Abs(transform.position.y - flyingHeight) > 0.01f)
         {
-            currentState = FlockState.Flying;
-            currentTarget = new Vector3(currentDestination.position.x, flyingHeight, currentDestination.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, target, liftOffSpeed * Time.deltaTime);
+            yield return null;
         }
     }
 
-    private void FlyToDestination()
+    private IEnumerator FlyAtConstantHeight(Vector3 target)
     {
-        // Update position to move towards target
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, flyingSpeed * Time.deltaTime);
-        // If destination reached
-        if(Vector3.Distance(transform.position, currentTarget) <= stoppingDistance)
+        while (Vector3.Distance(transform.position, target) > stoppingDistance)
         {
-            currentState = FlockState.Landing;
-            currentTarget = new Vector3(currentDestination.position.x, 0f, currentDestination.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, target, flyingSpeed * Time.deltaTime);
+            yield return null;
         }
     }
 
-    private void Land()
+    private IEnumerator Land(Vector3 target)
     {
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, descendSpeed * Time.deltaTime);
-        if(Vector3.Distance(transform.position, currentTarget) <= 0)
+        while (Vector3.Distance(transform.position, target) > 0)
         {
-            currentState = FlockState.Idle;
-            flightsDone++;
+            transform.position = Vector3.MoveTowards(transform.position, target, descendSpeed * Time.deltaTime);
+            yield return null;
         }
-        
+        // Land at the target position
+        transform.position = target;
     }
     private void LogTransform(Transform t)
     {
@@ -115,7 +117,8 @@ public class PigeonFlock : MonoBehaviour
     }
 }
 
-public enum FlockState {
+public enum FlockState
+{
     Idle,
     TakingOff,
     Flying,

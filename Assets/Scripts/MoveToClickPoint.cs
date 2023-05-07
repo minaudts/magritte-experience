@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class MoveToClickPoint : MonoBehaviour
 {
-    [SerializeField] InputActionAsset inputActionAsset;
+    //[SerializeField] InputActionAsset inputActionAsset;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     private NavMeshAgent agent;
