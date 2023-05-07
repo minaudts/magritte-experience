@@ -13,6 +13,8 @@ public class MoveToClickPoint : MonoBehaviour
     //private InputAction touchPressAction;
     private Mouse _mouse;
     private Touchscreen _touchscreen;
+    private PlayerStates _currentState;
+    private float _velocityPreviousFrame = 0f;
 
     void Awake()
     {
@@ -22,6 +24,7 @@ public class MoveToClickPoint : MonoBehaviour
         cam = Camera.main;
         _mouse = Mouse.current;
         _touchscreen = Touchscreen.current;
+        _currentState = PlayerStates.Idle;
     }
 
     private void Update() {
@@ -35,11 +38,14 @@ public class MoveToClickPoint : MonoBehaviour
         {
             OnTouch(_touchscreen.position.ReadValue(), _touchscreen.primaryTouch.tapCount.ReadValue() != 1);
         }
+        if(agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
+        _velocityPreviousFrame = agent.velocity.magnitude;
     }
 
     private void OnTouch(Vector2 screenPosition, bool doublePress)
     {
         //Debug.Log("Pressed position " + screenPosition.x + ", " + screenPosition.y);
+        _currentState = doublePress ? PlayerStates.Running : PlayerStates.Walking;
         agent.speed = doublePress ? runSpeed : walkSpeed;
         RaycastHit hit;
         if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))
@@ -48,27 +54,14 @@ public class MoveToClickPoint : MonoBehaviour
         }
     }
 
-    /*public void OnPress(InputAction.CallbackContext context)
+    public PlayerStates GetCurrentState()
     {
-        Vector2 touchPos = touchPositionAction.ReadValue<Vector2>();
-        RaycastHit hit;
-        if (Physics.Raycast(cam.ScreenPointToRay(touchPos), out hit, 100))
-        {
-            agent.destination = hit.point;
-        }
+        return _currentState;
     }
-
-    private void OnEnable() 
-    {
-        touchPressAction.Enable();
-        touchPositionAction.Enable();
-        touchPressAction.performed += OnPress;
-    }
-
-    private void OnDisable() 
-    {
-        touchPressAction.performed -= OnPress;
-        touchPressAction.Disable();
-        touchPositionAction.Disable();
-    }*/
+}
+public enum PlayerStates
+{
+    Idle,
+    Walking,
+    Running
 }

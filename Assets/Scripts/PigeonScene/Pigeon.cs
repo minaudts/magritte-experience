@@ -14,10 +14,12 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // Eventueel implementatie aanpassen
         if(isKeyPigeon)
         {
-            keyPressedText.gameObject.SetActive(true);
             Debug.Log("Pigeon clicked");
+            keyPressedText.gameObject.SetActive(true);
+            Destroy(this.gameObject);
         }
     }
 }
