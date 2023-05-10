@@ -27,9 +27,10 @@ public class MoveToClickPoint : MonoBehaviour
         _currentState = PlayerStates.Idle;
     }
 
-    private void Update() {
+    private void Update()
+    {
         // check for mouse input
-        if(_mouse != null && _mouse.leftButton.wasPressedThisFrame) 
+        if (_mouse != null && _mouse.leftButton.wasPressedThisFrame)
         {
             OnTouch(_mouse.position.ReadValue(), _mouse.clickCount.ReadValue() != 1);
         }
@@ -38,7 +39,7 @@ public class MoveToClickPoint : MonoBehaviour
         {
             OnTouch(_touchscreen.position.ReadValue(), _touchscreen.primaryTouch.tapCount.ReadValue() != 1);
         }
-        if(agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
+        if (agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
         _velocityPreviousFrame = agent.velocity.magnitude;
     }
 
@@ -54,9 +55,17 @@ public class MoveToClickPoint : MonoBehaviour
         }
     }
 
-    public PlayerStates GetCurrentState()
+    public bool IsIdle()
     {
-        return _currentState;
+        return _currentState == PlayerStates.Idle;
+    }
+    public bool IsWalking()
+    {
+        return _currentState == PlayerStates.Walking;
+    }
+    public bool IsRunning()
+    {
+        return _currentState == PlayerStates.Running;
     }
 }
 public enum PlayerStates
