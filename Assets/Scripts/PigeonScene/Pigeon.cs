@@ -7,7 +7,7 @@ using System;
 public class Pigeon : MonoBehaviour, IPointerClickHandler
 {
     private bool _isKeyPigeon = false;
-    [SerializeField] private TMP_Text keyPressedText;
+    [SerializeField] private SceneLoader backToHub;
     [SerializeField] private float noiseMagnitude = 0.01f; // the amount of vertical noise to add
     [SerializeField] private float noiseFrequency = 1f; // the frequency of the noise
     private float _timeOffset; // a random time offset for each pigeon
@@ -35,12 +35,19 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
 
     public void SetState(FlockState state)
     {
-        _currentState = state;
+        if(_isKeyPigeon)
+        {
+            _currentState = FlockState.Idle;
+        }
+        else
+        {
+            _currentState = state;
+        }
     }
 
     private void AddNoiseToHeight()
     {
-        // Calculate the noise value based on time and position
+        // Calculate the noise value based on time and position, remap from [0,1] to [-1,1]
         float noise = Mathf.PerlinNoise(Time.time * noiseFrequency + _timeOffset, transform.position.y * noiseFrequency) * 2f - 1f;
         noise *= noiseMagnitude;
 
@@ -54,7 +61,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         if(_isKeyPigeon)
         {
             Debug.Log("Pigeon clicked");
-            keyPressedText.gameObject.SetActive(true);
+            backToHub.gameObject.SetActive(true);
             PortalManager.Instance.OnPigeonPortalComplete();
             Destroy(this.gameObject);
         }
