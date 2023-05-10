@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
 using System;
+using System.Linq;
 
 public class Pigeon : MonoBehaviour, IPointerClickHandler
 {
@@ -13,11 +14,18 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
     private float _timeOffset; // a random time offset for each pigeon
     private float _initialHeight;
     private FlockState _currentState = FlockState.Idle;
+    private string _idleToTakeOff = "IdleToTakeOff";
+    private string _flyToLand = "FlyToLand";
+    [SerializeField] private PigeonIdleState[] idleStates;
+    private int currentIdleStateIndex;
+    private Animator _animator;
 
-    private void Start() 
+    private void Start()
     {
         _timeOffset = UnityEngine.Random.Range(0f, 10f);
         _initialHeight = transform.localPosition.y;
+        _animator = GetComponent<Animator>();
+        _animator.SetFloat("Offset", UnityEngine.Random.Range(0, _animator.GetCurrentAnimatorStateInfo(0).length));
     }
     public void MakeKeyPigeon()
     {
@@ -25,23 +33,43 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         _isKeyPigeon = true;
     }
 
-    private void Update() 
+    private void Update()
     {
-        if(_currentState == FlockState.Flying)
+        if (_currentState == FlockState.Flying)
         {
             AddNoiseToHeight();
         }
+        if (_currentState == FlockState.Idle && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && !_animator.IsInTransition(0))
+        {
+            currentIdleStateIndex = UnityEngine.Random.Range(0, idleStates.Length);
+            //Set a random part of the animation to start from
+            float randomOffset = UnityEngine.Random.Range(0, _animator.GetCurrentAnimatorStateInfo(0).length);
+            _animator.CrossFade(idleStates[currentIdleStateIndex].ToString(), 0.05f, 0, randomOffset);
+        }
+    }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        _animator.speed = speed;
     }
 
     public void SetState(FlockState state)
     {
-        if(_isKeyPigeon)
+        if (_isKeyPigeon)
         {
             _currentState = FlockState.Idle;
         }
         else
         {
             _currentState = state;
+            if (state == FlockState.TakingOff)
+            {
+                _animator.SetTrigger(_idleToTakeOff);
+            }
+            else if (state == FlockState.Landing)
+            {
+                _animator.SetTrigger(_flyToLand);
+            }
         }
     }
 
@@ -58,7 +86,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         // Eventueel implementatie aanpassen
-        if(_isKeyPigeon)
+        if (_isKeyPigeon)
         {
             Debug.Log("Pigeon clicked");
             backToHub.gameObject.SetActive(true);
@@ -71,4 +99,11 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
             // Animatietje spelen?
         }
     }
+}
+
+public enum PigeonIdleState
+{
+    Idle0,
+    Idle1,
+    Idle2
 }

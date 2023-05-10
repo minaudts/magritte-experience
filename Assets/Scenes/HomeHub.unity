@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &259215371
 Transform:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &271310594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +621,6 @@ GameObject:
   - component: {fileID: 615105120}
   - component: {fileID: 615105119}
   - component: {fileID: 615105118}
-  - component: {fileID: 615105121}
   m_Layer: 5
   m_Name: ExitGame
   m_TagString: Untagged
@@ -647,7 +646,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -60.559998, y: -38.96}
+  m_AnchoredPosition: {x: -60.56006, y: -38.95996}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &615105118
@@ -744,18 +743,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 615105116}
   m_CullTransparentMesh: 1
---- !u!114 &615105121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615105116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba996f7a5704f094d90607b70c652407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &726336267
 GameObject:
   m_ObjectHideFlags: 0

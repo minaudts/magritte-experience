@@ -12,6 +12,7 @@ public class PigeonFlock : MonoBehaviour
     [SerializeField] private float liftOffDistance;
     [SerializeField] private float descendSpeed;
     [SerializeField] private float stoppingDistance;
+    
     private int destinationIndex = 0;
     private Pigeon[] _pigeons;
     private MoveToClickPoint _player;
@@ -72,7 +73,11 @@ public class PigeonFlock : MonoBehaviour
 
     private IEnumerator AscendToFlyingHeight(Vector3 target)
     {
+        // Make pigeons play take off animation
         SetPigeonsState(FlockState.TakingOff);
+        // wait until animation is complete, then start ascending, time is animation #frames / fps
+        yield return new WaitForSeconds(49f/60f);
+        SetPigeonsState(FlockState.Flying);
         while (Mathf.Abs(transform.position.y - flyingHeight) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, liftOffSpeed * Time.deltaTime);
@@ -82,22 +87,27 @@ public class PigeonFlock : MonoBehaviour
 
     private IEnumerator FlyAtConstantHeight(Vector3 target)
     {
-        SetPigeonsState(FlockState.Flying);
+        SetPigeonsAnimationSpeed(0.6f);
         while (Vector3.Distance(transform.position, target) > stoppingDistance)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, flyingSpeed * Time.deltaTime);
             yield return null;
         }
+        SetPigeonsAnimationSpeed(1f);
     }
 
     private IEnumerator Land(Vector3 target)
     {
-        SetPigeonsState(FlockState.Landing);
-        while (Vector3.Distance(transform.position, target) > 0)
+        // below this float the land animation will take over 
+        float startLandAnimationHeight = 0.04f;
+        while (Vector3.Distance(transform.position, target) > startLandAnimationHeight)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, descendSpeed * Time.deltaTime);
             yield return null;
         }
+        SetPigeonsState(FlockState.Landing);
+        // duration of land animation
+        yield return new WaitForSeconds(0.75f);
         // Land at the target position
         transform.position = target;
         SetPigeonsState(FlockState.Idle);
@@ -116,6 +126,13 @@ public class PigeonFlock : MonoBehaviour
         foreach(Pigeon pigeon in _pigeons)
         {
             pigeon.SetState(state);
+        }
+    }
+    private void SetPigeonsAnimationSpeed(float speed)
+    {
+        foreach(Pigeon pigeon in _pigeons)
+        {
+            pigeon.SetAnimationSpeed(speed);
         }
     }
 }

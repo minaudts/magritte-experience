@@ -30,14 +30,14 @@ public class MoveToClickPoint : MonoBehaviour
     private void Update()
     {
         // check for mouse input
-        if (_mouse != null && _mouse.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            OnTouch(_mouse.position.ReadValue(), _mouse.clickCount.ReadValue() != 1);
+            OnTouch(Mouse.current.position.ReadValue(), Mouse.current.clickCount.ReadValue() != 1);
         }
         // check for touchscreen input
-        else if (_touchscreen != null && _touchscreen.primaryTouch.tap.isPressed)
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.tap.isPressed)
         {
-            OnTouch(_touchscreen.position.ReadValue(), _touchscreen.primaryTouch.tapCount.ReadValue() != 1);
+            OnTouch(Touchscreen.current.position.ReadValue(), Touchscreen.current.primaryTouch.tapCount.ReadValue() != 1);
         }
         if (agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
         _velocityPreviousFrame = agent.velocity.magnitude;
