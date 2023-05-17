@@ -6,49 +6,87 @@ using UnityEngine.AI;
 public class CrowdMan : MonoBehaviour
 {
     private NavMeshAgent _agent;
-    private LineRenderer _line;
-    private Vector3 _destination;
-    [SerializeField] float crowdCircleRadius = 12.5f;
-    // Start is called before the first frame update
-    void Start()
+    private float _crowdCircleRadius;
+    private FaceObject _faceObject;
+    private bool _isWaiting =false;
+    [SerializeField, Range(0.0f, 1.0f)] private float chance = 0.3f;
+    void Awake()
     {
-        _line = GetComponent<LineRenderer>();
         _agent = GetComponent<NavMeshAgent>();
-        StartCoroutine(GetPath());
+        _faceObject = GetComponentInChildren<FaceObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_agent.hasPath)
+        if (DidArrive())
         {
-            StartCoroutine(GetPath());
+            ClearPath();
+        }
+        if (!_isWaiting && !_agent.hasPath)
+        {
+            // Decide if want to set new destination or wait for a few seconds.
+            DecideNextAction();
         }
     }
 
-    private IEnumerator GetPath()
+    private bool DidArrive()
     {
-        _line.SetPosition(0, transform.position); //set the line's origin
-        Vector2 unitCircle = Random.insideUnitCircle * crowdCircleRadius;
-        Debug.Log(unitCircle.x + ", " + unitCircle.y);
+        bool didArrive = _agent.remainingDistance <= _agent.stoppingDistance;
+        return didArrive;
+    }
+    private void ClearPath()
+    {
+        _agent.ResetPath();
+
+    }
+
+    private void DecideNextAction()
+    {
+        bool startWaiting = Random.Range(0f, 1f) < chance;
+        Debug.Log(startWaiting);
+        if(startWaiting)
+        {
+            // Wait few seconds
+            StartCoroutine(StopAndWait());
+        }
+        else
+        {
+            // Pick new path
+            SetPath();
+        }
+        
+    }
+
+    private IEnumerator StopAndWait()
+    {
+        _agent.isStopped = true;
+        float waitTime = Random.Range(3f, 5f);
+        Debug.Log("Setting isWaiting flag to true");
+        _isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
+        Debug.Log("Setting isWaiting flag to false");
+        _isWaiting = false;
+    }
+
+    public void SetCircleRadius(float radius)
+    {
+        _crowdCircleRadius = radius;
+    }
+
+    public void SetAvoidancePriority(int priority)
+    {
+        _agent.avoidancePriority = priority;
+    }
+    public void SetFaceObject(GameObject faceObject)
+    {
+        _faceObject.InstantiateObject(faceObject);
+    }
+
+    private void SetPath()
+    {
+        Vector2 unitCircle = Random.insideUnitCircle * _crowdCircleRadius;
         _agent.SetDestination(new Vector3(unitCircle.x, 0, unitCircle.y)); //create the path
-        yield return new WaitForEndOfFrame(); //wait for the path to generate
-
-        DrawPath(_agent.path);
-
-        //agent.Stop();//add this if you don't want to move the agent
-    }
-
-    private void DrawPath(NavMeshPath path)
-    {
-        if (path.corners.Length < 2) //if the path has 1 or no corners, there is no need
-            return;
-
-        _line.positionCount = path.corners.Length; //set the array of positions to the amount of corners
-
-        for (int i = 1; i < path.corners.Length; i++)
-        {
-            _line.SetPosition(i, path.corners[i]); //go through each corner and set that to the line renderer's position
-        }
+       
     }
 }
