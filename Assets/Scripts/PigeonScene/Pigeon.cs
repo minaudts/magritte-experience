@@ -90,7 +90,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         {
             Debug.Log("Pigeon clicked");
             backToHub.gameObject.SetActive(true);
-            PortalManager.Instance.OnPigeonPortalComplete();
+            //PortalManager.Instance.OnPigeonPortalComplete();
             Destroy(this.gameObject);
         }
         else

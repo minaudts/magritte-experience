@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdef7cfc7984d124dbf7a8d824bc7229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: 4657f0158bfc575499b39c38deb6d0ef, type: 3}
   walkSpeed: 5
   runSpeed: 10
 --- !u!54 &4358604914515036729

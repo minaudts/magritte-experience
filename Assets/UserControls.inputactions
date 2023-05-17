@@ -522,25 +522,16 @@
             "id": "c0c8da20-3655-42a7-9e0a-76527d9304e9",
             "actions": [
                 {
-                    "name": "TouchPosition",
-                    "type": "Value",
-                    "id": "1c09f9d4-aa2a-44f1-b50f-39db670c19a5",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "TouchPress",
+                    "name": "Walk",
                     "type": "Button",
                     "id": "2c01e868-7065-4b08-bd2e-fd6e19e12e13",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
-                    "name": "TouchDoublePress",
+                    "name": "Run",
                     "type": "Button",
                     "id": "54e620f2-71f4-45e0-869f-3e4fad805f42",
                     "expectedControlType": "Button",
@@ -552,67 +543,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "57b485b4-f4d7-498d-a30b-a6b39c0cefbf",
-                    "path": "<Touchscreen>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchPosition",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f05dd262-da09-48f9-abd9-aa7781936148",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchPosition",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e29e1e5f-7ce0-4080-ba7e-ec0d11960d8b",
-                    "path": "<Touchscreen>/Press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchPress",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "00d03b84-060e-41fc-acee-3c93f816a443",
-                    "path": "<Mouse>/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchPress",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "19d0313f-402b-47c2-b952-ac5580f63f9c",
-                    "path": "<Touchscreen>/touch*/Press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TouchDoublePress",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4f0e04bf-3306-464e-b7bb-fb2491ab44aa",
-                    "path": "",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=0.25)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a0213f3-aa01-4b31-b022-6cf0e408d6dd",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TouchDoublePress",
+                    "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

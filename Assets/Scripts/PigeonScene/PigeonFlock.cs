@@ -132,7 +132,7 @@ public class PigeonFlock : MonoBehaviour
     {
         foreach(Pigeon pigeon in _pigeons)
         {
-            pigeon.SetAnimationSpeed(speed);
+            if(pigeon) pigeon.SetAnimationSpeed(speed);
         }
     }
 }

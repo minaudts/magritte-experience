@@ -4,48 +4,45 @@ using UnityEngine.InputSystem;
 
 public class MoveToClickPoint : MonoBehaviour
 {
-    //[SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] InputActionAsset inputActionAsset;
+    private InputAction _walkAction;
+    private InputAction _runAction;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     private NavMeshAgent agent;
     private Camera cam;
-    //private InputAction touchPositionAction;
-    //private InputAction touchPressAction;
-    private Mouse _mouse;
-    private Touchscreen _touchscreen;
+    private InputAction pressAction;
     private PlayerStates _currentState;
     private float _velocityPreviousFrame = 0f;
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        //touchPositionAction = inputActionAsset.FindActionMap("InGame").FindAction("TouchPosition");
-        //touchPressAction = inputActionAsset.FindActionMap("InGame").FindAction("TouchPress");
         cam = Camera.main;
-        _mouse = Mouse.current;
-        _touchscreen = Touchscreen.current;
         _currentState = PlayerStates.Idle;
+        _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Walk");
+        _runAction = inputActionAsset.FindActionMap("InGame").FindAction("Run");
     }
 
     private void Update()
     {
-        // check for mouse input
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            OnTouch(Mouse.current.position.ReadValue(), Mouse.current.clickCount.ReadValue() != 1);
-        }
-        // check for touchscreen input
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.tap.isPressed)
-        {
-            OnTouch(Touchscreen.current.position.ReadValue(), Touchscreen.current.primaryTouch.tapCount.ReadValue() != 1);
-        }
         if (agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
         _velocityPreviousFrame = agent.velocity.magnitude;
     }
 
-    private void OnTouch(Vector2 screenPosition, bool doublePress)
+    private void OnWalk(InputAction.CallbackContext context)
     {
-        //Debug.Log("Pressed position " + screenPosition.x + ", " + screenPosition.y);
+        OnMove(Mouse.current.position.ReadValue(), false);
+        Debug.Log("walk");
+    }
+    private void OnRun(InputAction.CallbackContext context)
+    {
+        OnMove(Mouse.current.position.ReadValue(), true);
+        Debug.Log("run");
+    }
+
+    private void OnMove(Vector2 screenPosition, bool doublePress)
+    {
         _currentState = doublePress ? PlayerStates.Running : PlayerStates.Walking;
         agent.speed = doublePress ? runSpeed : walkSpeed;
         RaycastHit hit;
@@ -53,6 +50,21 @@ public class MoveToClickPoint : MonoBehaviour
         {
             agent.destination = hit.point;
         }
+    }
+
+    private void OnEnable() 
+    {
+        _walkAction.performed += OnWalk;
+        _walkAction.Enable();
+        _runAction.performed += OnRun;
+        _runAction.Enable();
+    }
+    private void OnDisable() 
+    {
+        _walkAction.performed -= OnWalk;
+        _walkAction.Disable();
+        _runAction.performed -= OnRun;
+        _runAction.Disable();
     }
 
     public bool IsIdle()
