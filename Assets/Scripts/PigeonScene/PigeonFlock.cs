@@ -75,8 +75,8 @@ public class PigeonFlock : MonoBehaviour
     {
         // Make pigeons play take off animation
         SetPigeonsState(FlockState.TakingOff);
-        // wait until animation is complete, then start ascending, time is animation #frames / fps
-        yield return new WaitForSeconds(49f/60f);
+        // wait until animation is complete, then start ascending, time is animation #frames / fps / animationSpeed
+        yield return new WaitForSeconds(49f/60f/2f);
         SetPigeonsState(FlockState.Flying);
         while (Mathf.Abs(transform.position.y - flyingHeight) > 0.01f)
         {
