@@ -16,14 +16,22 @@ public class MoveToClickPoint : MonoBehaviour
     private Vector3 _respawnPoint;
     //private float _velocityPreviousFrame = 0f;
 
+    //new
+    private float playerSpeed;
+    private Animator animator;
+
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();        
         cam = Camera.main;
         _currentState = PlayerStates.Idle;
         _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Walk");
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("Run");
         _respawnPoint = transform.position;
+
+        //new
+        animator = GetComponent<Animator>();
+
     }
 
     private void Update()
@@ -33,6 +41,11 @@ public class MoveToClickPoint : MonoBehaviour
             _currentState = PlayerStates.Idle;
         }
         //_velocityPreviousFrame = agent.velocity.magnitude;
+
+        //new
+        playerSpeed = agent.velocity.magnitude;
+        animator.SetFloat("speed", playerSpeed);
+        Debug.Log(playerSpeed);
     }
 
     private void OnWalk(InputAction.CallbackContext context)
