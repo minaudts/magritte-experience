@@ -40,12 +40,12 @@ public class MoveToClickPoint : MonoBehaviour
             //Debug.Log("Back to idle");
             _currentState = PlayerStates.Idle;
         }
-        //_velocityPreviousFrame = agent.velocity.magnitude;
+        if(!agent.hasPath) agent.velocity = Vector3.zero; // om gliches te fixen
 
         //new
         playerSpeed = agent.velocity.magnitude;
         animator.SetFloat("speed", playerSpeed);
-        Debug.Log(playerSpeed);
+        //Debug.Log(playerSpeed);
     }
 
     private void OnWalk(InputAction.CallbackContext context)
@@ -64,6 +64,7 @@ public class MoveToClickPoint : MonoBehaviour
     private void OnMove(Vector2 screenPosition, bool doublePress)
     {
         agent.speed = doublePress ? runSpeed : walkSpeed;
+        Debug.Log(screenPosition.x + " " + screenPosition.y);
         RaycastHit hit;
         if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))
         {
@@ -101,13 +102,12 @@ public class MoveToClickPoint : MonoBehaviour
     public void Respawn()
     {
         agent.ResetPath();
+        // Warp agent back to initial point
         agent.Warp(_respawnPoint);
-        /*agent.updatePosition = false;
+        // Set rotation to face forward
         agent.updateRotation = false;
-        transform.position = _respawnPoint;
-        transform.eulerAngles = Vector3.zero;
-        agent.updatePosition = true;
-        agent.updateRotation = true;*/
+        transform.eulerAngles = new Vector3(0, 90, 0);
+        agent.updateRotation = true;
     }
 }
 public enum PlayerStates

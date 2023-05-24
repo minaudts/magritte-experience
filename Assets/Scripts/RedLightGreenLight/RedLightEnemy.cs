@@ -5,7 +5,6 @@ using UnityEngine;
 public class RedLightEnemy : MonoBehaviour
 {
     [SerializeField] private MoveToClickPoint magritte; // Reference to player
-    [SerializeField] private float lineOfSightAngle = 45f; // If player is in this angle and moving, he is busted
     [Header("Rotation Settings")]
     [SerializeField] private float rotationDuration = 2f; // Time required to rotate
     [SerializeField] private float minTurnDelay = 2f; // Minimum delay before enemy turns around
@@ -18,6 +17,7 @@ public class RedLightEnemy : MonoBehaviour
     private MeshRenderer _mesh;
     private float _angleBetweenEnemyAndPlayer;
     private bool _isLooking = false;
+    private bool _canStartNewRotation = true;
     private void Start() 
     {
         _mesh = GetComponent<MeshRenderer>();
@@ -28,13 +28,13 @@ public class RedLightEnemy : MonoBehaviour
     void Update()
     {
         // -90f om angle the normaliseren
-        _angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
-        Debug.Log(_angleBetweenEnemyAndPlayer);
-        if(Mathf.Abs(_angleBetweenEnemyAndPlayer) < lineOfSightAngle && !magritte.IsIdle()) {
+        //_angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
+        //Debug.Log(_angleBetweenEnemyAndPlayer);
+        if(_isLooking && !magritte.IsIdle()) {
             Debug.Log("Player in sight and moving!");
             Respawn();
         }
-        if(!_isLooking)
+        if(_canStartNewRotation)
         {
             StartCoroutine(RedLightGreenLight());
         }
@@ -56,7 +56,8 @@ public class RedLightEnemy : MonoBehaviour
 
     private IEnumerator RedLightGreenLight()
     {
-        _isLooking = true;
+        _canStartNewRotation = false;
+        Debug.Log("Can not start new rotation");
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(OrangeLight());
         yield return StartCoroutine(RedLight());
@@ -69,7 +70,8 @@ public class RedLightEnemy : MonoBehaviour
         float waitForNextRedLight = Random.Range(minTurnDelay, maxTurnDelay);
         Debug.Log("Turn around again in " + waitForNextRedLight.ToString("F2") + "s");
         yield return new WaitForSeconds(waitForNextRedLight);
-        _isLooking = false;
+        Debug.Log("Can start a new rotation");
+        _canStartNewRotation = true;
     }
 
     private IEnumerator OrangeLight()
@@ -82,9 +84,13 @@ public class RedLightEnemy : MonoBehaviour
     private IEnumerator RedLight() 
     {
         yield return StartCoroutine(RotateForDegrees(180f, true));
+        Debug.Log("Started looking");
+        _isLooking = true;
     }
     private IEnumerator GreenLight()
     {
+        _isLooking = false;
+        Debug.Log("Not looking anymore");
         yield return StartCoroutine(RotateForDegrees(180f, false));
     }
     private void Respawn()
