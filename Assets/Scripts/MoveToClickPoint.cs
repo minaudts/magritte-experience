@@ -64,7 +64,6 @@ public class MoveToClickPoint : MonoBehaviour
     private void OnMove(Vector2 screenPosition, bool doublePress)
     {
         agent.speed = doublePress ? runSpeed : walkSpeed;
-        Debug.Log(screenPosition.x + " " + screenPosition.y);
         RaycastHit hit;
         if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))
         {
