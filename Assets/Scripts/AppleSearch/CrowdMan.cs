@@ -62,10 +62,8 @@ public class CrowdMan : MonoBehaviour
     {
         _agent.isStopped = true;
         float waitTime = Random.Range(3f, 5f);
-        Debug.Log("Setting isWaiting flag to true");
         _isWaiting = true;
         yield return new WaitForSeconds(waitTime);
-        Debug.Log("Setting isWaiting flag to false");
         _isWaiting = false;
     }
 

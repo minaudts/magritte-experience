@@ -13,7 +13,8 @@ public class MoveToClickPoint : MonoBehaviour
     private Camera cam;
     private InputAction pressAction;
     private PlayerStates _currentState;
-    private float _velocityPreviousFrame = 0f;
+    private Vector3 _respawnPoint;
+    //private float _velocityPreviousFrame = 0f;
 
     //new
     private float playerSpeed;
@@ -26,6 +27,7 @@ public class MoveToClickPoint : MonoBehaviour
         _currentState = PlayerStates.Idle;
         _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Walk");
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("Run");
+        _respawnPoint = transform.position;
 
         //new
         animator = GetComponent<Animator>();
@@ -34,29 +36,33 @@ public class MoveToClickPoint : MonoBehaviour
 
     private void Update()
     {
-        if (agent.isStopped && _velocityPreviousFrame > 0f) _currentState = PlayerStates.Idle;
-        _velocityPreviousFrame = agent.velocity.magnitude;
+        if (agent.remainingDistance <= agent.stoppingDistance && _currentState != PlayerStates.Idle) {
+            //Debug.Log("Back to idle");
+            _currentState = PlayerStates.Idle;
+        }
+        if(!agent.hasPath) agent.velocity = Vector3.zero; // om gliches te fixen
 
         //new
         playerSpeed = agent.velocity.magnitude;
         animator.SetFloat("speed", playerSpeed);
-        Debug.Log(playerSpeed);
+        //Debug.Log(playerSpeed);
     }
 
     private void OnWalk(InputAction.CallbackContext context)
     {
+        _currentState = PlayerStates.Walking;
         OnMove(Mouse.current.position.ReadValue(), false);
-        Debug.Log("walk");
+        //Debug.Log("walk");
     }
     private void OnRun(InputAction.CallbackContext context)
     {
+        _currentState = PlayerStates.Running;
         OnMove(Mouse.current.position.ReadValue(), true);
-        Debug.Log("run");
+        //Debug.Log("run");
     }
 
     private void OnMove(Vector2 screenPosition, bool doublePress)
     {
-        _currentState = doublePress ? PlayerStates.Running : PlayerStates.Walking;
         agent.speed = doublePress ? runSpeed : walkSpeed;
         RaycastHit hit;
         if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))
@@ -91,6 +97,16 @@ public class MoveToClickPoint : MonoBehaviour
     public bool IsRunning()
     {
         return _currentState == PlayerStates.Running;
+    }
+    public void Respawn()
+    {
+        agent.ResetPath();
+        // Warp agent back to initial point
+        agent.Warp(_respawnPoint);
+        // Set rotation to face forward
+        agent.updateRotation = false;
+        transform.eulerAngles = new Vector3(0, 90, 0);
+        agent.updateRotation = true;
     }
 }
 public enum PlayerStates
