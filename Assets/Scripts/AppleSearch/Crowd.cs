@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Crowd : MonoBehaviour
 {
@@ -17,15 +18,20 @@ public class Crowd : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void SpawnCrowd()
     {
-        for(int i = 0; i < crowdSize; i++)
+        for (int i = 0; i < crowdSize; i++)
         {
-            Vector2 unitCircle = Random.insideUnitCircle * crowdRadius;
-            GameObject res = Instantiate(crowdManPrefab, new Vector3(unitCircle.x, 0, unitCircle.y), Quaternion.identity, transform);
+            Vector3 unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * crowdRadius;
+            // Zorgen dat man niet naast navMesh spawnt.
+            NavMeshHit hit;
+            NavMesh.SamplePosition(unitCircle, out hit, crowdRadius, 1);
+            Vector3 finalPosition = hit.position;
+
+            GameObject res = Instantiate(crowdManPrefab, new Vector3(finalPosition.x, 0, finalPosition.y), Quaternion.identity, transform);
             CrowdMan crowdMan = res.GetComponent<CrowdMan>();
             crowdMan.SetCircleRadius(crowdRadius);
             crowdMan.SetAvoidancePriority(Random.Range(40, 60));

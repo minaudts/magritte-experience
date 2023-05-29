@@ -7,8 +7,8 @@ using System.Linq;
 
 public class Pigeon : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] private GameObject _airBridge;
     private bool _isKeyPigeon = false;
-    [SerializeField] private SceneLoader backToHub;
     [SerializeField] private float noiseMagnitude = 0.01f; // the amount of vertical noise to add
     [SerializeField] private float noiseFrequency = 1f; // the frequency of the noise
     private float _timeOffset; // a random time offset for each pigeon
@@ -89,7 +89,8 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         if (_isKeyPigeon)
         {
             Debug.Log("Pigeon clicked");
-            backToHub.gameObject.SetActive(true);
+            _airBridge.SetActive(true);
+            //backToHub.gameObject.SetActive(true);
             //PortalManager.Instance.OnPigeonPortalComplete();
             Destroy(this.gameObject);
         }
