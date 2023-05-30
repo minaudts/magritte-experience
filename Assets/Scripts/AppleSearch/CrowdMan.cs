@@ -10,7 +10,8 @@ public class CrowdMan : MonoBehaviour
     private float _crowdCircleRadius;
     private FaceObject _faceObject;
     private bool _isWaiting = false;
-    [SerializeField, Range(0.0f, 1.0f)] private float chance = 0.3f;
+    [SerializeField, Range(0.0f, 1.0f)] private float chanceToWait = 0.3f;
+    [SerializeField] private float minimalWalkingDistance = 10f;
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -51,8 +52,8 @@ public class CrowdMan : MonoBehaviour
 
     private void DecideNextAction()
     {
-        bool startWaiting = Random.Range(0f, 1f) < chance;
-        Debug.Log(startWaiting);
+        bool startWaiting = Random.Range(0f, 1f) < chanceToWait;
+        //Debug.Log(startWaiting);
         if(startWaiting)
         {
             // Wait few seconds
@@ -63,7 +64,6 @@ public class CrowdMan : MonoBehaviour
             // Pick new path
             SetPath();
         }
-        
     }
 
     private IEnumerator StopAndWait()
@@ -93,6 +93,10 @@ public class CrowdMan : MonoBehaviour
     {
         // Kan eventueel ook gwn met random punt op navMesh
         Vector2 unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
+        if(Vector3.Distance(unitCircle, transform.position) < minimalWalkingDistance)
+        {
+            unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
+        }
         _agent.SetDestination(new Vector3(unitCircle.x, 0, unitCircle.y)); //create the path
     }
 }

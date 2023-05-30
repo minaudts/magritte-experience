@@ -25,13 +25,19 @@ public class Crowd : MonoBehaviour
     {
         for (int i = 0; i < crowdSize; i++)
         {
-            Vector3 unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * crowdRadius;
+            Vector3 randomDirection = Random.insideUnitCircle * crowdRadius;
+            randomDirection += transform.position;
+            Vector3 finalPosition = randomDirection;
+            Debug.Log(randomDirection.ToString());
             // Zorgen dat man niet naast navMesh spawnt.
             NavMeshHit hit;
-            NavMesh.SamplePosition(unitCircle, out hit, crowdRadius, 1);
-            Vector3 finalPosition = hit.position;
+            if(NavMesh.SamplePosition(randomDirection, out hit, crowdRadius, 1)) 
+            {
+                finalPosition = hit.position;
+            }
+            Debug.Log(finalPosition.ToString());
 
-            GameObject res = Instantiate(crowdManPrefab, new Vector3(finalPosition.x, 0, finalPosition.y), Quaternion.identity, transform);
+            GameObject res = Instantiate(crowdManPrefab, new Vector3(finalPosition.x, 0, finalPosition.z), Quaternion.identity, transform);
             CrowdMan crowdMan = res.GetComponent<CrowdMan>();
             crowdMan.SetCircleRadius(crowdRadius);
             crowdMan.SetAvoidancePriority(Random.Range(40, 60));

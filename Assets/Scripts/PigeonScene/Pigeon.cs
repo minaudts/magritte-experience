@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
-using System.Collections;
+using System.Collections.Generic;
 using System;
-using System.Linq;
 
 public class Pigeon : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private GameObject _airBridge;
+    [SerializeField] private List<GameObject> _objectsToActivate;
     private bool _isKeyPigeon = false;
     [SerializeField] private float noiseMagnitude = 0.01f; // the amount of vertical noise to add
     [SerializeField] private float noiseFrequency = 1f; // the frequency of the noise
@@ -89,7 +87,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         if (_isKeyPigeon)
         {
             Debug.Log("Pigeon clicked");
-            _airBridge.SetActive(true);
+            _objectsToActivate.ForEach(o => o.SetActive(true));
             //backToHub.gameObject.SetActive(true);
             //PortalManager.Instance.OnPigeonPortalComplete();
             Destroy(this.gameObject);
