@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class FaceObject : MonoBehaviour
 {
-    private float hoverHeight = 1f;
-    private float hoverSpeed = 1f;
+    private float hoverHeight = 0.02f;
+    private float hoverSpeed = 2f;
 
     private float startY;
+    private MeshRenderer _mesh;
+
     // Start is called before the first frame update
     void Start()
     {
         startY = transform.position.y;
+        //_mesh = GetComponent<MeshRenderer>();
     }
 
-    public void InstantiateObject(GameObject faceObj)
+    public void InstantiateObject(GameObject faceObj, Material mat)
     {
         Instantiate(faceObj, transform);
+        _mesh = GetComponentInChildren<MeshRenderer>();
+        _mesh.material = mat;
     }
 
     private void Update() 
     {
-        //HoverUpAndDown();
+        HoverUpAndDown();
     }
 
     private void HoverUpAndDown()
@@ -30,4 +35,8 @@ public class FaceObject : MonoBehaviour
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
     
+    public void SetMaterial(Material mat)
+    {
+        _mesh.material = mat;
+    }
 }
