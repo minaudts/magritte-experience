@@ -7,36 +7,97 @@ public class CrowdMan : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private Animator _animator;
-    private float _crowdCircleRadius;
+    //private float _crowdCircleRadius;
     private FaceObject _faceObject;
-    private bool _isWaiting = false;
-    [SerializeField, Range(0.0f, 1.0f)] private float chanceToWait = 0.3f;
-    [SerializeField] private float minimalWalkingDistance = 10f;
+    //private bool _isWaiting = false;
+    [SerializeField] private CrowdManBehaviour behaviour;
+    //[SerializeField, Range(0.0f, 1.0f)] private float chanceToWait = 0.3f;
+    //[SerializeField] private float minimalWalkingDistance = 10f;
+    [SerializeField] private PatrolPath patrolPath;
+    [SerializeField] private bool reversePath;
+    [SerializeField] private int startAtPathIndex = 0;
+    private List<Transform> _points;
+    private int destPoint = 0;
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _faceObject = GetComponentInChildren<FaceObject>();
+        destPoint = startAtPathIndex;
+        if (behaviour == CrowdManBehaviour.WalkAround)
+        {
+            _points = patrolPath.GetPath();
+            if (reversePath) _points.Reverse();
+            _agent.autoBraking = false;
+            GoToNextPoint();
+        }
+        if (behaviour == CrowdManBehaviour.Wait || behaviour == CrowdManBehaviour.Talk)
+        {
+            _animator.SetFloat("speed", 0);
+            // Set random idle offset
+            float offset = Random.Range(0f, 1f);
+            _animator.Play("idle", 0, offset);
+            Debug.Log(offset);
+            // lowest priority
+            SetAvoidancePriority(1);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (behaviour == CrowdManBehaviour.WalkAround)
+        {
+            WalkAroundBehaviour();
+        }
+        else if (behaviour == CrowdManBehaviour.Wait)
+        {
+            WaitBehaviour();
+        }
+        else if (behaviour == CrowdManBehaviour.Talk)
+        {
+            TalkBehaviour();
+        }
+    }
+
+    void WalkAroundBehaviour()
+    {
         if (DidArrive())
         {
             ClearPath();
         }
-        if (!_isWaiting && !_agent.hasPath)
+        if (!_agent.pathPending && _agent.remainingDistance < 0.5f)
         {
-            // Decide if want to set new destination or wait for a few seconds.
-            DecideNextAction();
+            // Choose the next destination point when the agent gets
+            // close to the current one.
+            GoToNextPoint();
         }
-        if(!_agent.hasPath) _agent.velocity = Vector3.zero; // om gliches te fixen
-
-        //new
-        //playerSpeed = _agent.velocity.magnitude;
+        if (!_agent.hasPath) _agent.velocity = Vector3.zero; // om glitches te fixen
         _animator.SetFloat("speed", _agent.velocity.magnitude);
-        //Debug.Log(playerSpeed);
+    }
+
+    void WaitBehaviour()
+    {
+
+    }
+
+    void TalkBehaviour()
+    {
+
+    }
+
+    void GoToNextPoint()
+    {
+        // Returns if no points have been set up
+        if (_points.Count == 0)
+            return;
+
+        // Set the agent to go to the currently selected destination.
+        _agent.destination = _points[destPoint].position;
+
+        // Choose the next point in the array as the destination,
+        // cycling to the start if necessary.
+        destPoint = (destPoint + 1) % _points.Count;
     }
 
     private bool DidArrive()
@@ -50,53 +111,23 @@ public class CrowdMan : MonoBehaviour
 
     }
 
-    private void DecideNextAction()
-    {
-        bool startWaiting = Random.Range(0f, 1f) < chanceToWait;
-        //Debug.Log(startWaiting);
-        if(startWaiting)
-        {
-            // Wait few seconds
-            StartCoroutine(StopAndWait());
-        }
-        else
-        {
-            // Pick new path
-            SetPath();
-        }
-    }
-
-    private IEnumerator StopAndWait()
-    {
-        _agent.isStopped = true;
-        float waitTime = Random.Range(3f, 5f);
-        _isWaiting = true;
-        yield return new WaitForSeconds(waitTime);
-        _isWaiting = false;
-    }
-
-    public void SetCircleRadius(float radius)
-    {
-        _crowdCircleRadius = radius;
-    }
-
     public void SetAvoidancePriority(int priority)
     {
         _agent.avoidancePriority = priority;
     }
-    public void SetFaceObject(GameObject faceObject)
+    public void SetFaceObject(GameObject faceObject, Material mat)
     {
-        _faceObject.InstantiateObject(faceObject);
+        _faceObject.InstantiateObject(faceObject, mat);
     }
+    public void SetBehaviour(CrowdManBehaviour behaviour)
+    {
+        this.behaviour = behaviour;
+    }
+}
 
-    private void SetPath()
-    {
-        // Kan eventueel ook gwn met random punt op navMesh
-        Vector2 unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
-        if(Vector3.Distance(unitCircle, transform.position) < minimalWalkingDistance)
-        {
-            unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
-        }
-        _agent.SetDestination(new Vector3(unitCircle.x, 0, unitCircle.y)); //create the path
-    }
+public enum CrowdManBehaviour
+{
+    WalkAround,
+    Wait,
+    Talk,
 }

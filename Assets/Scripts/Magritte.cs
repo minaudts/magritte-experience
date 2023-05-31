@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class MoveToClickPoint : MonoBehaviour
+public class Magritte : MonoBehaviour
 {
     [SerializeField] InputActionAsset inputActionAsset;
     private InputAction _walkAction;
@@ -33,7 +33,7 @@ public class MoveToClickPoint : MonoBehaviour
 
     private void Update()
     {
-        if ((!agent.hasPath || agent.remainingDistance <= 3) && _currentState != PlayerStates.Idle) {
+        if ((!agent.hasPath || agent.remainingDistance <= 1.5f) && _currentState != PlayerStates.Idle) {
             Debug.Log("Back to idle");
             _currentState = PlayerStates.Idle;
         }

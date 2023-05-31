@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RedLightEnemy : MonoBehaviour
 {
-    [SerializeField] private MoveToClickPoint magritte; // Reference to player
+    [SerializeField] private Magritte magritte; // Reference to player
     [Header("Rotation Settings")]
     [SerializeField] private float rotationDuration = 2f; // Time required to rotate
     [SerializeField] private float minTurnDelay = 2f; // Minimum delay before enemy turns around

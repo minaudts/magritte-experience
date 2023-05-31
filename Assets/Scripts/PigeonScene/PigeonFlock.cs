@@ -15,13 +15,13 @@ public class PigeonFlock : MonoBehaviour
     
     private int destinationIndex = 0;
     private Pigeon[] _pigeons;
-    private MoveToClickPoint _player;
+    private Magritte _player;
     private bool _keyPigeonHasBeenPicked = false;
     // Start is called before the first frame update
     void Start()
     {
         _pigeons = GetComponentsInChildren<Pigeon>();
-        _player = GameObject.FindObjectOfType<MoveToClickPoint>();
+        _player = GameObject.FindObjectOfType<Magritte>();
     }
 
     private void OnTriggerEnter(Collider other)
