@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class Peashooter : MonoBehaviour
 {
-    [SerializeField] private Transform[] points; // Patrol points
+    [SerializeField] private PatrolPath path; // Patrol points
+    private List<Transform> _points;
     private int destPoint = 0; // Current destination point
     private NavMeshAgent _agent;
 
@@ -17,22 +18,22 @@ public class Peashooter : MonoBehaviour
         // between points (ie, the agent doesn't slow down as it
         // approaches a destination point).
         _agent.autoBraking = false;
-
+        _points = path.GetPath();
         GotoNextPoint();
     }
 
     void GotoNextPoint()
     {
         // Returns if no points have been set up
-        if (points.Length == 0)
+        if (_points.Count == 0)
             return;
 
         // Set the agent to go to the currently selected destination.
-        _agent.destination = points[destPoint].position;
+        _agent.destination = _points[destPoint].position;
 
         // Choose the next point in the array as the destination,
         // cycling to the start if necessary.
-        destPoint = (destPoint + 1) % points.Length;
+        destPoint = (destPoint + 1) % _points.Count;
     }
 
 
