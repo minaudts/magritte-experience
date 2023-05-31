@@ -6,13 +6,16 @@ using UnityEngine.AI;
 public class CrowdMan : MonoBehaviour
 {
     private NavMeshAgent _agent;
+    private Animator _animator;
     private float _crowdCircleRadius;
     private FaceObject _faceObject;
-    private bool _isWaiting =false;
-    [SerializeField, Range(0.0f, 1.0f)] private float chance = 0.3f;
+    private bool _isWaiting = false;
+    [SerializeField, Range(0.0f, 1.0f)] private float chanceToWait = 0.3f;
+    [SerializeField] private float minimalWalkingDistance = 10f;
     void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
         _faceObject = GetComponentInChildren<FaceObject>();
     }
 
@@ -28,6 +31,12 @@ public class CrowdMan : MonoBehaviour
             // Decide if want to set new destination or wait for a few seconds.
             DecideNextAction();
         }
+        if(!_agent.hasPath) _agent.velocity = Vector3.zero; // om gliches te fixen
+
+        //new
+        //playerSpeed = _agent.velocity.magnitude;
+        _animator.SetFloat("speed", _agent.velocity.magnitude);
+        //Debug.Log(playerSpeed);
     }
 
     private bool DidArrive()
@@ -43,8 +52,8 @@ public class CrowdMan : MonoBehaviour
 
     private void DecideNextAction()
     {
-        bool startWaiting = Random.Range(0f, 1f) < chance;
-        Debug.Log(startWaiting);
+        bool startWaiting = Random.Range(0f, 1f) < chanceToWait;
+        //Debug.Log(startWaiting);
         if(startWaiting)
         {
             // Wait few seconds
@@ -55,7 +64,6 @@ public class CrowdMan : MonoBehaviour
             // Pick new path
             SetPath();
         }
-        
     }
 
     private IEnumerator StopAndWait()
@@ -83,8 +91,12 @@ public class CrowdMan : MonoBehaviour
 
     private void SetPath()
     {
-        Vector2 unitCircle = Random.insideUnitCircle * _crowdCircleRadius;
+        // Kan eventueel ook gwn met random punt op navMesh
+        Vector2 unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
+        if(Vector3.Distance(unitCircle, transform.position) < minimalWalkingDistance)
+        {
+            unitCircle = new Vector2(transform.position.x, transform.position.z) + Random.insideUnitCircle * _crowdCircleRadius;
+        }
         _agent.SetDestination(new Vector3(unitCircle.x, 0, unitCircle.y)); //create the path
-       
     }
 }

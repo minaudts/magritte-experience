@@ -18,7 +18,7 @@ public class MoveToClickPoint : MonoBehaviour
 
     //new
     private float playerSpeed;
-    private Animator animator;
+    private Animator _animator;
 
     void Awake()
     {
@@ -28,28 +28,30 @@ public class MoveToClickPoint : MonoBehaviour
         _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Walk");
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("Run");
         _respawnPoint = transform.position;
-
-        //new
-        animator = GetComponent<Animator>();
-
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance && _currentState != PlayerStates.Idle) {
-            //Debug.Log("Back to idle");
+        if ((!agent.hasPath || agent.remainingDistance <= 3) && _currentState != PlayerStates.Idle) {
+            Debug.Log("Back to idle");
             _currentState = PlayerStates.Idle;
         }
         if(!agent.hasPath) agent.velocity = Vector3.zero; // om gliches te fixen
 
-        //new
         playerSpeed = agent.velocity.magnitude;
-        animator.SetFloat("speed", playerSpeed);
+        _animator.SetFloat("speed", playerSpeed);
         //Debug.Log(playerSpeed);
     }
 
     private void OnWalk(InputAction.CallbackContext context)
     {
+        // If running, ignore this walk trigger unless there is no double tap.
+        // Otherwise player will start walking for a bit when giving a run input while running
+        if(_currentState == PlayerStates.Running)
+        {
+            // TODO
+        }
         _currentState = PlayerStates.Walking;
         OnMove(Mouse.current.position.ReadValue(), false);
         //Debug.Log("walk");

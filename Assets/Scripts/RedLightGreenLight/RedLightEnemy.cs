@@ -11,17 +11,19 @@ public class RedLightEnemy : MonoBehaviour
     [SerializeField] private float maxTurnDelay = 5f; // Maximum delay before enemy turns around
     [SerializeField] private float minLookDuration = 1f; // Minimum duration for enemy to look at player
     [SerializeField] private float maxLookDuration = 3f; // Maximum duration for enemy to look at player
-    [SerializeField] private float orangeLightDuration = 0.5f; // Orange light duration
-    [SerializeField] private Material orangeLightMaterial; // Quick visualizer when enemy is about to turn
-    private Material _originalMaterial;
-    private MeshRenderer _mesh;
+    private float orangeLightDuration = 1.383f; // Orange light duration
+    //[SerializeField] private Material orangeLightMaterial; // Quick visualizer when enemy is about to turn
+    //private Material _originalMaterial;
+    //private MeshRenderer _mesh;
     private float _angleBetweenEnemyAndPlayer;
     private bool _isLooking = false;
     private bool _canStartNewRotation = true;
+    private Animator _animator;
     private void Start() 
     {
-        _mesh = GetComponent<MeshRenderer>();
-        _originalMaterial = _mesh.material;
+        //_mesh = GetComponent<MeshRenderer>();
+        _animator = GetComponent<Animator>();
+        //_originalMaterial = _mesh.material;
     }
 
     // Update is called once per frame
@@ -41,17 +43,18 @@ public class RedLightEnemy : MonoBehaviour
     }
 
     private IEnumerator RotateForDegrees(float degrees, bool turnLeft = true) {
+        _animator.SetBool("IsSwimming", true);
         float targetAngle = transform.eulerAngles.y + (turnLeft ? -degrees : degrees);
         float startAngle = transform.eulerAngles.y;
         float time = 0f;
         while(time < rotationDuration) {
-            float currentAngle = Mathf.LerpAngle(startAngle, targetAngle, time / rotationDuration);
-            if (turnLeft) transform.eulerAngles = new Vector3(transform.eulerAngles.x, -currentAngle, transform.eulerAngles.z);
-            else transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentAngle, transform.eulerAngles.z);
+            float currentAngle = Mathf.Lerp(startAngle, targetAngle, time / rotationDuration);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentAngle, transform.eulerAngles.z);
             time += Time.deltaTime;
             yield return null;
         }
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, targetAngle, transform.eulerAngles.z);
+        _animator.SetBool("IsSwimming", false);
     }
 
     private IEnumerator RedLightGreenLight()
@@ -76,9 +79,11 @@ public class RedLightEnemy : MonoBehaviour
 
     private IEnumerator OrangeLight()
     {
-        _mesh.material = orangeLightMaterial;
+        
+        //_mesh.material = orangeLightMaterial;
+        _animator.SetTrigger("Warning");
         yield return new WaitForSeconds(orangeLightDuration);
-        _mesh.material = _originalMaterial;
+        //_mesh.material = _originalMaterial;
     }
 
     private IEnumerator RedLight() 
