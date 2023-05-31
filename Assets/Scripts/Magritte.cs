@@ -47,7 +47,6 @@ public class Magritte : MonoBehaviour
 
     private void OnWalk(InputAction.CallbackContext context)
     {
-        Vector2 pos = _position.ReadValue<Vector2>();
         // If running, ignore this walk trigger unless there is no double tap.
         // Otherwise player will start walking for a bit when giving a run input while running
         if(_currentState == PlayerStates.Running)
@@ -55,20 +54,19 @@ public class Magritte : MonoBehaviour
             // TODO
         }
         _currentState = PlayerStates.Walking;
-        Debug.Log(pos.ToString());
-        OnMove(pos, false);
-        Debug.Log("walk");
+        OnMove(false);
+        //Debug.Log("walk");
     }
     private void OnRun(InputAction.CallbackContext context)
     {
-        Vector2 pos = _position.ReadValue<Vector2>();
         _currentState = PlayerStates.Running;
-        OnMove(pos, true);
-        Debug.Log("run");
+        OnMove(true);
+        //Debug.Log("run");
     }
 
-    private void OnMove(Vector2 screenPosition, bool doublePress)
+    private void OnMove(bool doublePress)
     {
+        Vector2 screenPosition = _position.ReadValue<Vector2>();
         agent.speed = doublePress ? runSpeed : walkSpeed;
         RaycastHit hit;
         if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))

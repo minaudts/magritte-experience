@@ -6,11 +6,12 @@ using UnityEngine.EventSystems;
 public class KeyPigeon : Pigeon
 {
     private Key _key;
-    private void Awake() {
+    private void Awake() 
+    {
         _key = GetComponentInChildren<Key>();
     }
     public void DropKey()
     {
-        _key.OnDrop();
+        _key.MakeCollectable(true);
     }
 }

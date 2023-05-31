@@ -6,31 +6,33 @@ using System;
 
 public class Key : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private List<GameObject> _objectsToActivate;
+    [SerializeField] private IronGate gate;
+    [SerializeField] private AirBridge bridge;
     private Rigidbody _rb;
     private bool _isCollectable = false;
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
     }
-    private void MakeCollectable()
+    public void MakeCollectable(bool shouldDrop)
     {
         _isCollectable = true;
+        if(shouldDrop) OnDrop();
     }
 
-    public void OnDrop()
+    private void OnDrop()
     {
         transform.SetParent(null, true);
         _rb.isKinematic = false;
         _rb.AddForce(new Vector3(0, 100, 0));
         StartCoroutine(EnlargeKeyToScale(3.5f));
-        MakeCollectable();
     }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_isCollectable)
         {
             Debug.Log("Key collected");
-            _objectsToActivate.ForEach(o => o.SetActive(true));
+            gate.Open();
+            bridge.Appear();
             Destroy(gameObject);
         }
     }

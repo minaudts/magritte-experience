@@ -12,7 +12,7 @@ public class PigeonFlock : MonoBehaviour
     [SerializeField] private float liftOffDistance;
     [SerializeField] private float descendSpeed;
     [SerializeField] private float stoppingDistance;
-
+    private bool _isFlying = false;
     private int destinationIndex = 0;
     private Pigeon[] _pigeons;
     private KeyPigeon _keyPigeon;
@@ -27,7 +27,7 @@ public class PigeonFlock : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Magritte>())
+        if (other.GetComponent<Magritte>() && !_isFlying)
         {
             Debug.Log(other.name + " entered pigeon flock");
             // If player is running, pick random key pigeon
@@ -45,6 +45,7 @@ public class PigeonFlock : MonoBehaviour
 
     private IEnumerator FlyToDestination(Vector3 target)
     {
+        _isFlying = true;
         // Look at target
         transform.LookAt(target, Vector3.up);
         // Get the starting position of the flock
@@ -66,6 +67,7 @@ public class PigeonFlock : MonoBehaviour
         yield return StartCoroutine(Land(currentTarget));
         // Update destination
         destinationIndex = (destinationIndex + 1) % flyDestinations.Length;
+        _isFlying = false;
     }
 
     private IEnumerator AscendToFlyingHeight(Vector3 target)
