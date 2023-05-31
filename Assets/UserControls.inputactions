@@ -462,6 +462,17 @@
                 },
                 {
                     "name": "",
+                    "id": "63cb4ede-e673-4d68-9c09-1b558055634e",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "38c99815-14ea-4617-8627-164d27641299",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
@@ -522,7 +533,7 @@
             "id": "c0c8da20-3655-42a7-9e0a-76527d9304e9",
             "actions": [
                 {
-                    "name": "Walk",
+                    "name": "Tap",
                     "type": "Button",
                     "id": "2c01e868-7065-4b08-bd2e-fd6e19e12e13",
                     "expectedControlType": "Button",
@@ -531,35 +542,66 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Run",
+                    "name": "DoubleTap",
                     "type": "Button",
                     "id": "54e620f2-71f4-45e0-869f-3e4fad805f42",
                     "expectedControlType": "Button",
                     "processors": "",
+                    "interactions": "MultiTap(tapTime=0.5,tapDelay=0.25)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "8848e80c-e7e4-4431-8707-c981dac635d4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "4f0e04bf-3306-464e-b7bb-fb2491ab44aa",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "MultiTap(tapTime=0.5,tapDelay=0.25)",
+                    "id": "223b599e-81ac-477b-b3a9-2aef08f080a0",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Run",
+                    "action": "DoubleTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "2a0213f3-aa01-4b31-b022-6cf0e408d6dd",
-                    "path": "<Mouse>/leftButton",
+                    "id": "6f399c0d-7c2d-42ee-a015-a6ecf341b9ce",
+                    "path": "<Pointer>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Walk",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25cf11dd-f4df-4dac-ba62-f3b11443225d",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef4fe42a-49ac-46b2-bb9a-ea5ee3bc7b6e",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

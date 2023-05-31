@@ -7,11 +7,11 @@ public class Magritte : MonoBehaviour
     [SerializeField] InputActionAsset inputActionAsset;
     private InputAction _walkAction;
     private InputAction _runAction;
+    private InputAction _position;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     private NavMeshAgent agent;
     private Camera cam;
-    private InputAction pressAction;
     private PlayerStates _currentState;
     private Vector3 _respawnPoint;
     //private float _velocityPreviousFrame = 0f;
@@ -25,8 +25,9 @@ public class Magritte : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();        
         cam = Camera.main;
         _currentState = PlayerStates.Idle;
-        _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Walk");
-        _runAction = inputActionAsset.FindActionMap("InGame").FindAction("Run");
+        _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
+        _runAction = inputActionAsset.FindActionMap("InGame").FindAction("DoubleTap");
+        _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _respawnPoint = transform.position;
         _animator = GetComponent<Animator>();
     }
@@ -34,7 +35,7 @@ public class Magritte : MonoBehaviour
     private void Update()
     {
         if ((!agent.hasPath || agent.remainingDistance <= 1.5f) && _currentState != PlayerStates.Idle) {
-            Debug.Log("Back to idle");
+            //Debug.Log("Back to idle");
             _currentState = PlayerStates.Idle;
         }
         if(!agent.hasPath) agent.velocity = Vector3.zero; // om gliches te fixen
@@ -46,6 +47,7 @@ public class Magritte : MonoBehaviour
 
     private void OnWalk(InputAction.CallbackContext context)
     {
+        Vector2 pos = _position.ReadValue<Vector2>();
         // If running, ignore this walk trigger unless there is no double tap.
         // Otherwise player will start walking for a bit when giving a run input while running
         if(_currentState == PlayerStates.Running)
@@ -53,14 +55,16 @@ public class Magritte : MonoBehaviour
             // TODO
         }
         _currentState = PlayerStates.Walking;
-        OnMove(Mouse.current.position.ReadValue(), false);
-        //Debug.Log("walk");
+        Debug.Log(pos.ToString());
+        OnMove(pos, false);
+        Debug.Log("walk");
     }
     private void OnRun(InputAction.CallbackContext context)
     {
+        Vector2 pos = _position.ReadValue<Vector2>();
         _currentState = PlayerStates.Running;
-        OnMove(Mouse.current.position.ReadValue(), true);
-        //Debug.Log("run");
+        OnMove(pos, true);
+        Debug.Log("run");
     }
 
     private void OnMove(Vector2 screenPosition, bool doublePress)
@@ -79,6 +83,7 @@ public class Magritte : MonoBehaviour
         _walkAction.Enable();
         _runAction.performed += OnRun;
         _runAction.Enable();
+        _position.Enable();
     }
     private void OnDisable() 
     {
@@ -86,6 +91,7 @@ public class Magritte : MonoBehaviour
         _walkAction.Disable();
         _runAction.performed -= OnRun;
         _runAction.Disable();
+        _position.Disable();
     }
 
     public bool IsIdle()

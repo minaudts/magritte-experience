@@ -12,38 +12,35 @@ public class PigeonFlock : MonoBehaviour
     [SerializeField] private float liftOffDistance;
     [SerializeField] private float descendSpeed;
     [SerializeField] private float stoppingDistance;
-    
+
     private int destinationIndex = 0;
     private Pigeon[] _pigeons;
+    private KeyPigeon _keyPigeon;
     private Magritte _player;
-    private bool _keyPigeonHasBeenPicked = false;
     // Start is called before the first frame update
     void Start()
     {
         _pigeons = GetComponentsInChildren<Pigeon>();
+        _keyPigeon = GetComponentInChildren<KeyPigeon>();
         _player = GameObject.FindObjectOfType<Magritte>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name + " entered pigeon flock");
-        // If player is running, pick random key pigeon
-        if (!_keyPigeonHasBeenPicked && _player.IsRunning())
+        if (other.GetComponent<Magritte>())
         {
-            PickRandomKeyPigeon();
-            _keyPigeonHasBeenPicked = true;
+            Debug.Log(other.name + " entered pigeon flock");
+            // If player is running, pick random key pigeon
+            if (_player.IsRunning())
+            {
+                _keyPigeon.DropKey();
+            }
+            // Always fly to next destination in a loop
+            Debug.Log("Flying to next destination");
+            // Destination is endpoint of the flight
+            currentDestination = flyDestinations[destinationIndex];
+            StartCoroutine(FlyToDestination(currentDestination.position));
         }
-        // Always fly to next destination in a loop
-        Debug.Log("Flying to next destination");
-        // Destination is endpoint of the flight
-        currentDestination = flyDestinations[destinationIndex];
-        StartCoroutine(FlyToDestination(currentDestination.position));
-    }
-
-    private void PickRandomKeyPigeon()
-    {
-        int index = Random.Range(0, _pigeons.Length - 1);
-        _pigeons[index].MakeKeyPigeon();
     }
 
     private IEnumerator FlyToDestination(Vector3 target)
@@ -77,7 +74,7 @@ public class PigeonFlock : MonoBehaviour
         SetPigeonsState(FlockState.TakingOff);
         // wait until animation is complete, then start ascending, time is animation #frames / fps / animationSpeed
         SetPigeonsAnimationSpeed(2f);
-        yield return new WaitForSeconds(49f/60f/2f);
+        yield return new WaitForSeconds(49f / 60f / 2f);
         SetPigeonsState(FlockState.Flying);
         SetPigeonsAnimationSpeed(1.2f);
         while (Mathf.Abs(transform.position.y - flyingHeight) > 0.01f)
@@ -115,27 +112,19 @@ public class PigeonFlock : MonoBehaviour
         transform.position = target;
         SetPigeonsState(FlockState.Idle);
     }
-    private void LogTransform(Transform t)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.AppendJoin(", ", t.position.x, t.position.y, t.position.z);
-        sb.AppendLine();
-        sb.AppendJoin(", ", t.rotation.x, t.rotation.y, t.rotation.z);
-        Debug.Log(sb.ToString());
-    }
 
     private void SetPigeonsState(FlockState state)
     {
-        foreach(Pigeon pigeon in _pigeons)
+        foreach (Pigeon pigeon in _pigeons)
         {
             pigeon.SetState(state);
         }
     }
     private void SetPigeonsAnimationSpeed(float speed)
     {
-        foreach(Pigeon pigeon in _pigeons)
+        foreach (Pigeon pigeon in _pigeons)
         {
-            if(pigeon) pigeon.SetAnimationSpeed(speed);
+            if (pigeon) pigeon.SetAnimationSpeed(speed);
         }
     }
 }

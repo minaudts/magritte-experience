@@ -1,12 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using System;
 
-public class Pigeon : MonoBehaviour, IPointerClickHandler
-{
-    [SerializeField] private List<GameObject> _objectsToActivate;
-    private bool _isKeyPigeon = false;
+public class Pigeon : MonoBehaviour
+{  
     [SerializeField] private float noiseMagnitude = 0.01f; // the amount of vertical noise to add
     [SerializeField] private float noiseFrequency = 1f; // the frequency of the noise
     private float _timeOffset; // a random time offset for each pigeon
@@ -24,11 +21,6 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         _initialHeight = transform.localPosition.y;
         _animator = GetComponent<Animator>();
         _animator.SetFloat("Offset", UnityEngine.Random.Range(0f, 1f));
-    }
-    public void MakeKeyPigeon()
-    {
-        transform.SetParent(null, true);
-        _isKeyPigeon = true;
     }
 
     private void Update()
@@ -54,21 +46,14 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
 
     public void SetState(FlockState state)
     {
-        if (_isKeyPigeon)
+        _currentState = state;
+        if (state == FlockState.TakingOff)
         {
-            _currentState = FlockState.Idle;
+            _animator.SetTrigger(_idleToTakeOff);
         }
-        else
+        else if (state == FlockState.Landing)
         {
-            _currentState = state;
-            if (state == FlockState.TakingOff)
-            {
-                _animator.SetTrigger(_idleToTakeOff);
-            }
-            else if (state == FlockState.Landing)
-            {
-                _animator.SetTrigger(_flyToLand);
-            }
+            _animator.SetTrigger(_flyToLand);
         }
     }
 
@@ -82,7 +67,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         transform.localPosition = new Vector3(transform.localPosition.x, _initialHeight + noise, transform.localPosition.z);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    /*public void OntPointerClick(PointerEventData eventData)
     {
         // Eventueel implementatie aanpassen
         if (_isKeyPigeon)
@@ -98,7 +83,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
             // Geluidje maken?
             // Animatietje spelen?
         }
-    }
+    }*/
 }
 
 public enum PigeonIdleState

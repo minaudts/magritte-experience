@@ -11,7 +11,7 @@ public class Crowd : MonoBehaviour
     private CrowdMan[] _crowd;
     [SerializeField] private GameObject[] possibleFaceObjects;
     [SerializeField] private Material[] possibleMaterials;
-    [SerializeField] private KeyTrigger keyFaceObject;
+    [SerializeField] private Key keyFaceObject;
     [SerializeField] private Material keyMaterial;
     // Start is called before the first frame update
     void Start()
