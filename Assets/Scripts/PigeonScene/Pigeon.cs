@@ -23,7 +23,7 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         _timeOffset = UnityEngine.Random.Range(0f, 10f);
         _initialHeight = transform.localPosition.y;
         _animator = GetComponent<Animator>();
-        _animator.SetFloat("Offset", UnityEngine.Random.Range(0, _animator.GetCurrentAnimatorStateInfo(0).length));
+        _animator.SetFloat("Offset", UnityEngine.Random.Range(0f, 1f));
     }
     public void MakeKeyPigeon()
     {
@@ -39,9 +39,10 @@ public class Pigeon : MonoBehaviour, IPointerClickHandler
         }
         if (_currentState == FlockState.Idle && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && !_animator.IsInTransition(0))
         {
+            // Select random idle state
             currentIdleStateIndex = UnityEngine.Random.Range(0, idleStates.Length);
-            //Set a random part of the animation to start from
-            float randomOffset = UnityEngine.Random.Range(0, _animator.GetCurrentAnimatorStateInfo(0).length);
+            // Set a random part of the animation to start from
+            float randomOffset = UnityEngine.Random.Range(0f, 1f);
             _animator.CrossFade(idleStates[currentIdleStateIndex].ToString(), 0.05f, 0, randomOffset);
         }
     }
