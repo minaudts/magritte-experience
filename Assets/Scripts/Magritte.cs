@@ -2,64 +2,44 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class Magritte : MonoBehaviour
+public class Magritte : Person
 {
     [SerializeField] InputActionAsset inputActionAsset;
     private InputAction _walkAction;
     private InputAction _runAction;
     private InputAction _position;
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float runSpeed;
-    private NavMeshAgent agent;
-    private Camera cam;
-    private PlayerStates _currentState;
+    private Camera _cam;
     private Vector3 _respawnPoint;
     //private float _velocityPreviousFrame = 0f;
 
     //new
     private float playerSpeed;
-    private Animator _animator;
 
-    void Awake()
+    protected override void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();        
-        cam = Camera.main;
-        _currentState = PlayerStates.Idle;
+        base.Awake();
+        _cam = Camera.main;
         _walkAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("DoubleTap");
         _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _respawnPoint = transform.position;
-        _animator = GetComponent<Animator>();
-    }
-
-    private void Update()
-    {
-        if ((!agent.hasPath || agent.remainingDistance <= 1.5f) && _currentState != PlayerStates.Idle) {
-            //Debug.Log("Back to idle");
-            _currentState = PlayerStates.Idle;
-        }
-        if(!agent.hasPath) agent.velocity = Vector3.zero; // om gliches te fixen
-
-        playerSpeed = agent.velocity.magnitude;
-        _animator.SetFloat("speed", playerSpeed);
-        //Debug.Log(playerSpeed);
     }
 
     private void OnWalk(InputAction.CallbackContext context)
     {
         // If running, ignore this walk trigger unless there is no double tap.
         // Otherwise player will start walking for a bit when giving a run input while running
-        if(_currentState == PlayerStates.Running)
+        if(_currentState == MovementState.Running)
         {
             // TODO
         }
-        _currentState = PlayerStates.Walking;
+        _currentState = MovementState.Walking;
         OnMove(false);
         //Debug.Log("walk");
     }
     private void OnRun(InputAction.CallbackContext context)
     {
-        _currentState = PlayerStates.Running;
+        _currentState = MovementState.Running;
         OnMove(true);
         //Debug.Log("run");
     }
@@ -67,11 +47,11 @@ public class Magritte : MonoBehaviour
     private void OnMove(bool doublePress)
     {
         Vector2 screenPosition = _position.ReadValue<Vector2>();
-        agent.speed = doublePress ? runSpeed : walkSpeed;
+        SetAgentSpeed(doublePress ? runSpeed : walkSpeed);
         RaycastHit hit;
-        if (Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit, 100))
+        if (Physics.Raycast(_cam.ScreenPointToRay(screenPosition), out hit, 100))
         {
-            agent.destination = hit.point;
+            _agent.destination = hit.point;
         }
     }
 
@@ -92,32 +72,15 @@ public class Magritte : MonoBehaviour
         _position.Disable();
     }
 
-    public bool IsIdle()
-    {
-        return _currentState == PlayerStates.Idle;
-    }
-    public bool IsWalking()
-    {
-        return _currentState == PlayerStates.Walking;
-    }
-    public bool IsRunning()
-    {
-        return _currentState == PlayerStates.Running;
-    }
     public void Respawn()
     {
-        agent.ResetPath();
-        // Warp agent back to initial point
-        agent.Warp(_respawnPoint);
+        _agent.ResetPath();
+        // Warp _agent back to initial point
+        _agent.Warp(_respawnPoint);
         // Set rotation to face forward
-        agent.updateRotation = false;
+        _agent.updateRotation = false;
         transform.eulerAngles = new Vector3(0, 90, 0);
-        agent.updateRotation = true;
+        _agent.updateRotation = true;
     }
 }
-public enum PlayerStates
-{
-    Idle,
-    Walking,
-    Running
-}
+

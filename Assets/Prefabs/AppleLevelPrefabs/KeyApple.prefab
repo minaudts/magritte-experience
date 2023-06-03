@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2264381041007921795}
   - component: {fileID: 2937306942489953574}
   - component: {fileID: 1092015517964169708}
-  - component: {fileID: -1871660204283340713}
   - component: {fileID: 3051582411520780496}
+  - component: {fileID: 2742687245564363212}
   m_Layer: 0
   m_Name: KeyApple
   m_TagString: Untagged
@@ -85,18 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-1871660204283340713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452237311002038329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a3be88d57911b645a2dd7c95db02d81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &3051582411520780496
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -110,3 +98,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.37
   m_Center: {x: 0.0012631043, y: 0.0011316278, z: 0.008223438}
+--- !u!114 &2742687245564363212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452237311002038329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c2ed230f9037a468e8d3974f37d8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gate: {fileID: 0}
+  bridge: {fileID: 0}

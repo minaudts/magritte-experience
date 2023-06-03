@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CrowdMan : MonoBehaviour
+public class CrowdMan : Person
 {
-    private NavMeshAgent _agent;
-    private Animator _animator;
     //private float _crowdCircleRadius;
     private FaceObject _faceObject;
     //private bool _isWaiting = false;
@@ -18,10 +16,9 @@ public class CrowdMan : MonoBehaviour
     [SerializeField] private int startAtPathIndex = 0;
     private List<Transform> _points;
     private int destPoint = 0;
-    void Awake()
+    protected override void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>();
+        base.Awake();
         _faceObject = GetComponentInChildren<FaceObject>();
         destPoint = startAtPathIndex;
         if (behaviour == CrowdManBehaviour.WalkAround)
@@ -44,8 +41,9 @@ public class CrowdMan : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (behaviour == CrowdManBehaviour.WalkAround)
         {
             WalkAroundBehaviour();
@@ -109,11 +107,6 @@ public class CrowdMan : MonoBehaviour
     {
         _agent.ResetPath();
 
-    }
-
-    public void SetAvoidancePriority(int priority)
-    {
-        _agent.avoidancePriority = priority;
     }
     public void SetFaceObject(GameObject faceObject, Material mat)
     {

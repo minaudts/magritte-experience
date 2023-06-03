@@ -23,12 +23,6 @@ public class Crowd : MonoBehaviour
         //SpawnCrowd();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void AssignFaceObjects()
     {
         // Choose random man with key object

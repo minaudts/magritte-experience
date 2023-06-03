@@ -2481,7 +2481,7 @@ MonoBehaviour:
   - {fileID: 1452237311002038329, guid: 9365beed984cb7240a4fec5195d8485f, type: 3}
   possibleMaterials:
   - {fileID: 2100000, guid: 661a100f9fc6c434ebcbdceea8b4861f, type: 2}
-  keyFaceObject: {fileID: -1871660204283340713, guid: eb6e37b4508dc4848bfa23264da66183, type: 3}
+  keyFaceObject: {fileID: 2742687245564363212, guid: eb6e37b4508dc4848bfa23264da66183, type: 3}
   keyMaterial: {fileID: 2100000, guid: b6b99af858bf3eb44958334708adaa0c, type: 2}
 --- !u!4 &1118230536 stripped
 Transform:
