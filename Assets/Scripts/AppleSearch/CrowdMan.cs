@@ -70,6 +70,10 @@ public class CrowdMan : Person
             // close to the current one.
             GoToNextPoint();
         }
+        if(_currentVelocity > 0 && _currentVelocity <= walkSpeed)
+        {
+            _currentState = MovementState.Walking;
+        }
         if (!_agent.hasPath) _agent.velocity = Vector3.zero; // om glitches te fixen
         _animator.SetFloat("speed", _agent.velocity.magnitude);
     }

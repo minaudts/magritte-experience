@@ -22,14 +22,15 @@ public class PigeonFlock : MonoBehaviour
     {
         _pigeons = GetComponentsInChildren<Pigeon>();
         _keyPigeon = GetComponentInChildren<KeyPigeon>();
-        _player = GameObject.FindObjectOfType<Magritte>();
+        //_player = GameObject.FindObjectOfType<Magritte>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Magritte>() && !_isFlying)
+        _player = other.GetComponent<Magritte>();
+        if (_player && !_isFlying)
         {
-            Debug.Log(other.name + " entered pigeon flock");
+            Debug.Log(_player.name + " entered pigeon flock");
             // If player is running, pick random key pigeon
             if (_player.IsRunning())
             {

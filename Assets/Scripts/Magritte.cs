@@ -54,6 +54,10 @@ public class Magritte : Person
             _agent.destination = hit.point;
         }
     }
+    public bool IsRunning()
+    {
+        return _currentState == MovementState.Running;
+    }
 
     private void OnEnable() 
     {

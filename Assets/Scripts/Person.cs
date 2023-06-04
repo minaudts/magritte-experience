@@ -23,17 +23,9 @@ public abstract class Person : MonoBehaviour
         if(!_agent.hasPath) _agent.velocity = Vector3.zero; // om gliches te fixen
         _currentVelocity = GetVelocity();
         _animator.SetFloat("speed", _currentVelocity);
-        if ((!_agent.hasPath || _agent.remainingDistance <= 1.5f) && _currentState != MovementState.Idle) {
+        if ((!_agent.hasPath || _agent.remainingDistance <= 1.2f) && _currentState != MovementState.Idle) {
             //Debug.Log("Back to idle");
             _currentState = MovementState.Idle;
-        }
-        if(_currentVelocity > 0 && _currentVelocity <= walkSpeed)
-        {
-            _currentState = MovementState.Walking;
-        }
-        if(_currentVelocity > walkSpeed && _currentVelocity <= runSpeed) 
-        {
-            _currentState = MovementState.Running;
         }
     }
     public float GetVelocity() 
@@ -48,10 +40,7 @@ public abstract class Person : MonoBehaviour
     {
         return _currentState == MovementState.Walking;
     }
-    public bool IsRunning()
-    {
-        return _currentState == MovementState.Running;
-    }
+    
     public void SetAvoidancePriority(int priority)
     {
         _agent.avoidancePriority = priority;
