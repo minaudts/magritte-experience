@@ -14,8 +14,14 @@ public class CrowdMan : Person
     [SerializeField] private PatrolPath patrolPath;
     [SerializeField] private bool reversePath;
     [SerializeField] private int startAtPathIndex = 0;
+    [SerializeField] private CrowdManAnimationstate[] sitAnimations;
+    [SerializeField] private CrowdManAnimationstate[] talkAnimations;
+    [SerializeField] private CrowdManAnimationstate[] turnAnimations;
+    [SerializeField] private bool canHaveKey;
+    private bool _isTalking;
     private List<Transform> _points;
     private int destPoint = 0;
+    private Key _key;
     protected override void Awake()
     {
         base.Awake();
@@ -28,13 +34,13 @@ public class CrowdMan : Person
             _agent.autoBraking = false;
             GoToNextPoint();
         }
-        if (behaviour == CrowdManBehaviour.Wait || behaviour == CrowdManBehaviour.Talk)
+        if (behaviour != CrowdManBehaviour.WalkAround && behaviour != CrowdManBehaviour.Sit)
         {
             _animator.SetFloat("speed", 0);
             // Set random idle offset
             float offset = Random.Range(0f, 1f);
             _animator.Play("idle", 0, offset);
-            Debug.Log(offset);
+            //Debug.Log(offset);
             // lowest priority
             SetAvoidancePriority(1);
         }
@@ -55,6 +61,10 @@ public class CrowdMan : Person
         else if (behaviour == CrowdManBehaviour.Talk)
         {
             TalkBehaviour();
+        }
+        else if (behaviour == CrowdManBehaviour.Sit)
+        {
+            SitBehaviour();
         }
     }
 
@@ -85,7 +95,29 @@ public class CrowdMan : Person
 
     void TalkBehaviour()
     {
+        if(!_isTalking && !_animator.IsInTransition(0))
+        {
+            // Pick random talk animation
+            int talkAnimationIndex = Random.Range(0, talkAnimations.Length);
+            _animator.CrossFade(talkAnimations[talkAnimationIndex].ToString(), 0.05f, 0);
+            _isTalking = true;
+            float stateDuration = _animator.GetCurrentAnimatorStateInfo(0).length;
+            float nextTalkDelay = Random.Range(stateDuration + 0.5f, stateDuration + 4.5f);
+            StartCoroutine(WaitForSeconds(nextTalkDelay));
+        }
+    }
 
+    void SitBehaviour()
+    {
+        // Cycle through available sit animations
+        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && !_animator.IsInTransition(0))
+        {
+            // Select random idle state
+            int sitAnimationIndex = Random.Range(0, sitAnimations.Length);
+            // Set a random part of the animation to start from
+            float randomOffset = Random.Range(0f, 1f);
+            _animator.CrossFade(sitAnimations[sitAnimationIndex].ToString(), 0.05f, 0, randomOffset);
+        }
     }
 
     void GoToNextPoint()
@@ -107,18 +139,47 @@ public class CrowdMan : Person
         bool didArrive = _agent.remainingDistance <= _agent.stoppingDistance;
         return didArrive;
     }
+    public bool CanHaveKey()
+    {
+        return canHaveKey;
+    }
     private void ClearPath()
     {
         _agent.ResetPath();
-
     }
-    public void SetFaceObject(GameObject faceObject, Material mat)
+    public void SetFaceObject(GameObject faceObject)
     {
-        _faceObject.InstantiateObject(faceObject, mat);
+        _faceObject.InstantiateObject(faceObject, behaviour == CrowdManBehaviour.Sit);
     }
     public void SetBehaviour(CrowdManBehaviour behaviour)
     {
         this.behaviour = behaviour;
+    }
+    public void SetKey(Key key)
+    {
+        _key = key;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.GetComponent<Magritte>() && _key)
+        {
+            Debug.Log("Can collect key");
+            _key.MakeCollectable(false);
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if(other.GetComponent<Magritte>() && _key)
+        {
+            Debug.Log("Cannot collect key");
+            _key.MakeUncollectable();
+        }
+    }
+
+    private IEnumerator WaitForSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        _isTalking = false;
     }
 }
 
@@ -127,4 +188,20 @@ public enum CrowdManBehaviour
     WalkAround,
     Wait,
     Talk,
+    Sit,
+}
+
+public enum CrowdManAnimationstate
+{
+    sit,
+    sit1,
+    sit2,
+    talking,
+    talking1,
+    talking2,
+    talking3,
+    leftTurn,
+    leftTurn1,
+    rightTurn,
+    rightTurn1,
 }

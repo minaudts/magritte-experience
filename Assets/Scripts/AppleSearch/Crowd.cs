@@ -10,9 +10,7 @@ public class Crowd : MonoBehaviour
     //[SerializeField] private float crowdRadius = 12.5f;
     private CrowdMan[] _crowd;
     [SerializeField] private GameObject[] possibleFaceObjects;
-    [SerializeField] private Material[] possibleMaterials;
     [SerializeField] private Key keyFaceObject;
-    [SerializeField] private Material keyMaterial;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,14 +30,13 @@ public class Crowd : MonoBehaviour
             CrowdMan man = _crowd[i];
             if(i == keyManIndex)
             {
-                man.SetFaceObject(keyFaceObject.gameObject, keyMaterial);
+                man.SetFaceObject(keyFaceObject.gameObject);
             }
             else
             {
                 // Choose random object and color (or no object?)
                 int faceObjectIndex = GetRandomIndexInArray(possibleFaceObjects);
-                int materialIndex = GetRandomIndexInArray(possibleMaterials);
-                man.SetFaceObject(possibleFaceObjects[faceObjectIndex].gameObject, possibleMaterials[materialIndex]);
+                man.SetFaceObject(possibleFaceObjects[faceObjectIndex].gameObject);
             }
         }
     }

@@ -12,11 +12,18 @@ public class Key : MonoBehaviour, IPointerClickHandler
     private bool _isCollectable = false;
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
+        if(!gate) gate = GameObject.FindObjectOfType<IronGate>();
+        if(!bridge) bridge = GameObject.FindObjectOfType<AirBridge>();
     }
     public void MakeCollectable(bool shouldDrop)
     {
         _isCollectable = true;
         if(shouldDrop) OnDrop();
+    }
+
+    public void MakeUncollectable()
+    {
+        _isCollectable = false;
     }
 
     private void OnDrop()
@@ -28,6 +35,8 @@ public class Key : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("Key clicked");
+        Debug.Log(_isCollectable);
         if (_isCollectable)
         {
             Debug.Log("Key collected");

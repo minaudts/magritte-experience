@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c2ed230f9037a468e8d3974f37d8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectsToActivate: []
+  gate: {fileID: 0}
+  bridge: {fileID: 0}
 --- !u!54 &4767615017445759102
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,7 +76,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4767615018162023823
 PrefabInstance:

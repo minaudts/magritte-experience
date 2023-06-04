@@ -32,9 +32,9 @@ public class Pigeon : MonoBehaviour
         if (_currentState == FlockState.Idle && _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && !_animator.IsInTransition(0))
         {
             // Select random idle state
-            currentIdleStateIndex = UnityEngine.Random.Range(0, idleStates.Length);
+            currentIdleStateIndex = Random.Range(0, idleStates.Length);
             // Set a random part of the animation to start from
-            float randomOffset = UnityEngine.Random.Range(0f, 1f);
+            float randomOffset = Random.Range(0f, 1f);
             _animator.CrossFade(idleStates[currentIdleStateIndex].ToString(), 0.05f, 0, randomOffset);
         }
     }
@@ -67,23 +67,11 @@ public class Pigeon : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x, _initialHeight + noise, transform.localPosition.z);
     }
 
-    /*public void OntPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        // Eventueel implementatie aanpassen
-        if (_isKeyPigeon)
-        {
-            Debug.Log("Pigeon clicked");
-            _objectsToActivate.ForEach(o => o.SetActive(true));
-            //backToHub.gameObject.SetActive(true);
-            //PortalManager.Instance.OnPigeonPortalComplete();
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            // Geluidje maken?
-            // Animatietje spelen?
-        }
-    }*/
+        // Geluidje maken?
+        // Animatietje spelen?
+    }
 }
 
 public enum PigeonIdleState

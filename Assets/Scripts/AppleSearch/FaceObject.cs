@@ -17,11 +17,20 @@ public class FaceObject : MonoBehaviour
         //_mesh = GetComponent<MeshRenderer>();
     }
 
-    public void InstantiateObject(GameObject faceObj, Material mat)
+    public void InstantiateObject(GameObject faceObj, bool isSitting)
     {
-        Instantiate(faceObj, transform);
-        _mesh = GetComponentInChildren<MeshRenderer>();
-        _mesh.material = mat;
+        GameObject resObj = Instantiate(faceObj, transform);
+        if(resObj.GetComponent<Key>())
+        {
+            resObj.transform.localPosition = new Vector3(-0.182f, 0.136f, -0.022f);
+            resObj.transform.localEulerAngles = new Vector3(42.151f, 99.83f, 86.276f);
+            resObj.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            GetComponentInParent<CrowdMan>().SetKey(resObj.GetComponent<Key>());
+        }
+        if (isSitting)
+        {
+            resObj.transform.localPosition = new Vector3(resObj.transform.localPosition.x, resObj.transform.localPosition.y - 0.4f, resObj.transform.localPosition.z);
+        }
     }
 
     private void Update() 
@@ -33,10 +42,5 @@ public class FaceObject : MonoBehaviour
     {
         float newY = startY + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-    }
-    
-    public void SetMaterial(Material mat)
-    {
-        _mesh.material = mat;
     }
 }
