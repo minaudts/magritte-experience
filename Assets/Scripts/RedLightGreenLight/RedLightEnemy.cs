@@ -31,6 +31,8 @@ public class RedLightEnemy : MonoBehaviour
     public GameObject canvas;
     private Animator animatorRespawnFade;
 
+    public bool keyGrabbed;
+
     
 
     private void Start() 
@@ -44,22 +46,27 @@ public class RedLightEnemy : MonoBehaviour
         fadeTime = Time.time;
         animatorRespawnFade = canvas.GetComponent<Animator>();
         animatorRespawnFade.enabled = true;
+        keyGrabbed = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // -90f om angle the normaliseren
-        //_angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
-        //Debug.Log(_angleBetweenEnemyAndPlayer);
-        if(_isLooking && !magritte.IsIdle()) {
-            //Debug.Log("Player in sight and moving!");
-            Respawn();
-        }
-        if(_canStartNewRotation)
+        if (!keyGrabbed)
         {
-            StartCoroutine(RedLightGreenLight());
-        }
+            // -90f om angle the normaliseren
+            //_angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
+            //Debug.Log(_angleBetweenEnemyAndPlayer);
+            if (_isLooking && !magritte.IsIdle())
+            {
+                //Debug.Log("Player in sight and moving!");
+                Respawn();
+            }
+            if (_canStartNewRotation)
+            {
+                StartCoroutine(RedLightGreenLight());
+            }
+        }       
     }
 
     private IEnumerator RotateForDegrees(float degrees, bool turnLeft = true) {
