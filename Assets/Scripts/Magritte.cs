@@ -9,7 +9,7 @@ public class Magritte : Person
     private InputAction _runAction;
     private InputAction _position;
     private Camera _cam;
-    private Vector3 _respawnPoint;
+    public Vector3 _respawnPoint;
     //private float _velocityPreviousFrame = 0f;
 
     //new
