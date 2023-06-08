@@ -6,6 +6,11 @@ public class ToNewScene : MonoBehaviour
     private void Start() {
         //_sceneManager = GameObject.FindObjectOfType<GlobalSceneManager>();
     }
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.N)) {
+            SceneSwitcher.Instance.TransitionToScene(sceneToLoad, null);
+        }
+    }
     [SerializeField] private PossibleScenes sceneToLoad;
     private void OnTriggerEnter(Collider other) 
     {
@@ -21,6 +26,7 @@ public enum PossibleScenes
     MagritteHouse,
     PigeonDemo,
     __AppleSearchLevelDeco_BACKUP,
+    AppleSearchLevelDeco,
     RedLightGreenLight,
     DodgeTheDarkness   
 }

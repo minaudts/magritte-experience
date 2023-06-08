@@ -264,6 +264,7 @@ MonoBehaviour:
   walkSpeed: 3
   runSpeed: 6
   inputActionAsset: {fileID: -944628639613478452, guid: 4657f0158bfc575499b39c38deb6d0ef, type: 3}
+  _respawnPoint: {x: 0, y: 0, z: 0}
 --- !u!195 &1813018559680917989
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -276,7 +277,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 6
   m_Acceleration: 30
-  avoidancePriority: 70
+  avoidancePriority: 1
   m_AngularSpeed: 500
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1

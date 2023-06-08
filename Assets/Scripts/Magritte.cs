@@ -51,7 +51,11 @@ public class Magritte : Person
         RaycastHit hit;
         if (Physics.Raycast(_cam.ScreenPointToRay(screenPosition), out hit, 100))
         {
-            _agent.destination = hit.point;
+            if(CheckIfShouldMove(hit.collider))
+            {
+                Debug.Log(hit.collider.name.ToString());
+                _agent.destination = hit.point;
+            }
         }
     }
     public bool IsRunning()
@@ -85,6 +89,13 @@ public class Magritte : Person
         _agent.updateRotation = false;
         transform.eulerAngles = new Vector3(0, 90, 0);
         _agent.updateRotation = true;
+    }
+
+    // If collider is Crowdman, Pigeon, Key or ... return false
+    private bool CheckIfShouldMove(Collider collider)
+    {
+        return true;
+        //return !collider.GetComponent<CrowdMan>() && !collider.GetComponent<Pigeon>() && !collider.GetComponent<Key>();
     }
 }
 

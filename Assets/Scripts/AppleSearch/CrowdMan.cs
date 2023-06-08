@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
-public class CrowdMan : Person
+public class CrowdMan : Person, IPointerClickHandler
 {
     //private float _crowdCircleRadius;
     private FaceObject _faceObject;
+    const string SPEED = "speed";
     //private bool _isWaiting = false;
     [SerializeField] private CrowdManBehaviour behaviour;
     //[SerializeField, Range(0.0f, 1.0f)] private float chanceToWait = 0.3f;
@@ -14,11 +15,13 @@ public class CrowdMan : Person
     [SerializeField] private PatrolPath patrolPath;
     [SerializeField] private bool reversePath;
     [SerializeField] private int startAtPathIndex = 0;
-    [SerializeField] private CrowdManAnimationstate[] sitAnimations;
-    [SerializeField] private CrowdManAnimationstate[] talkAnimations;
-    [SerializeField] private CrowdManAnimationstate[] turnAnimations;
+    [SerializeField] private CrowdManAnimationState[] sitAnimations;
+    [SerializeField] private CrowdManAnimationState[] talkAnimations;
+    [SerializeField] private CrowdManAnimationState[] turnLeftAnimations;
+    [SerializeField] private CrowdManAnimationState[] turnRightAnimations;
     [SerializeField] private bool canHaveKey;
-    private bool _isTalking;
+    private bool _isTalking = false;
+    private bool _isTurning = false;
     private List<Transform> _points;
     private int destPoint = 0;
     private Key _key;
@@ -36,7 +39,7 @@ public class CrowdMan : Person
         }
         if (behaviour != CrowdManBehaviour.WalkAround && behaviour != CrowdManBehaviour.Sit)
         {
-            _animator.SetFloat("speed", 0);
+            _animator.SetFloat(SPEED, 0);
             // Set random idle offset
             float offset = Random.Range(0f, 1f);
             _animator.Play("idle", 0, offset);
@@ -50,19 +53,19 @@ public class CrowdMan : Person
     protected override void Update()
     {
         base.Update();
-        if (behaviour == CrowdManBehaviour.WalkAround)
+        if (!_isTurning && behaviour == CrowdManBehaviour.WalkAround)
         {
             WalkAroundBehaviour();
         }
-        else if (behaviour == CrowdManBehaviour.Wait)
+        else if (!_isTurning && behaviour == CrowdManBehaviour.Wait)
         {
             WaitBehaviour();
         }
-        else if (behaviour == CrowdManBehaviour.Talk)
+        else if (!_isTurning && behaviour == CrowdManBehaviour.Talk)
         {
             TalkBehaviour();
         }
-        else if (behaviour == CrowdManBehaviour.Sit)
+        else if (!_isTurning && behaviour == CrowdManBehaviour.Sit)
         {
             SitBehaviour();
         }
@@ -85,7 +88,7 @@ public class CrowdMan : Person
             _currentState = MovementState.Walking;
         }
         if (!_agent.hasPath) _agent.velocity = Vector3.zero; // om glitches te fixen
-        _animator.SetFloat("speed", _agent.velocity.magnitude);
+        _animator.SetFloat(SPEED, _agent.velocity.magnitude);
     }
 
     void WaitBehaviour()
@@ -181,6 +184,30 @@ public class CrowdMan : Person
         yield return new WaitForSeconds(seconds);
         _isTalking = false;
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(!_isTurning && behaviour != CrowdManBehaviour.Sit && behaviour != CrowdManBehaviour.WalkAround) {
+            StartCoroutine(LookAtCameraAndBack());
+        }
+    }
+
+    private IEnumerator LookAtCameraAndBack()
+    {
+        _isTurning = true;
+        _animator.SetFloat(SPEED, 0);
+        int turnStateIndex = Random.Range(0, turnLeftAnimations.Length);
+        CrowdManAnimationState turnLeftState = turnLeftAnimations[turnStateIndex];
+        CrowdManAnimationState turnRightState = turnRightAnimations[turnStateIndex];
+        Debug.Log(turnLeftState.ToString());
+        Debug.Log(turnRightState.ToString());
+        _animator.CrossFade(turnLeftState.ToString(), 0.2f, 0);
+        yield return new WaitForSeconds(3.2f);
+        _animator.CrossFade(turnRightState.ToString(), 0.2f, 0);
+        yield return new WaitForSeconds(2.5f);
+         Debug.Log("Done");
+        _isTurning = false;
+    }
 }
 
 public enum CrowdManBehaviour
@@ -191,7 +218,7 @@ public enum CrowdManBehaviour
     Sit,
 }
 
-public enum CrowdManAnimationstate
+public enum CrowdManAnimationState
 {
     sit,
     sit1,

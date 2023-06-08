@@ -25,6 +25,11 @@ public class Crowd : MonoBehaviour
     {
         // Choose random man with key object
         int keyManIndex = GetRandomIndexInArray(_crowd);
+        // Check if this man can have the key, if not choose another one
+        while(!_crowd[keyManIndex].CanHaveKey())
+        {
+            keyManIndex = GetRandomIndexInArray(_crowd);
+        }
         for(int i = 0; i < _crowd.Length; i++)
         {
             CrowdMan man = _crowd[i];
