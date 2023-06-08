@@ -36,8 +36,8 @@ ModelImporter:
       name: swim
       takeName: Armature|ArmatureAction
       internalID: 4781951162920444690
-      firstFrame: 1
-      lastFrame: 120
+      firstFrame: 0
+      lastFrame: 119
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
