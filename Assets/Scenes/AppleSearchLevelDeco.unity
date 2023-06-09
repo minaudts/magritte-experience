@@ -14405,7 +14405,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11
+  orthographic size: 3.7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -45110,6 +45110,10 @@ PrefabInstance:
     - target: {fileID: 7117008005254668589, guid: 70200e3f191e8874bb410d5f745cf905, type: 3}
       propertyPath: m_Name
       value: IronGateAnim
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326700604006128130, guid: 70200e3f191e8874bb410d5f745cf905, type: 3}
+      propertyPath: _timeDelay
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 7606405765840026519, guid: 70200e3f191e8874bb410d5f745cf905, type: 3}
       propertyPath: m_RootOrder
