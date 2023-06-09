@@ -90,8 +90,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 229968489469586843}
-  m_LocalRotation: {x: 0.0010982603, y: -0.01767371, z: 0.024366936, w: 0.99954635}
-  m_LocalPosition: {x: -0.00004, y: -0.00107, z: 0.00194}
+  m_LocalRotation: {x: 0.0010982603, y: -0.017673703, z: 0.024366938, w: 0.99954635}
+  m_LocalPosition: {x: -0.000067032284, y: -0.00043459336, z: 0.0018834603}
   m_LocalScale: {x: 0.0100000035, y: 0.010000003, z: 0.010000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -616,7 +616,6 @@ GameObject:
   - component: {fileID: 4049158171980117064}
   - component: {fileID: 5617153509751741055}
   - component: {fileID: 7301023914117803354}
-  - component: {fileID: 8556436949293450763}
   m_Layer: 0
   m_Name: CrowdMan
   m_TagString: Untagged
@@ -654,7 +653,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: a14b02896436a8d4182bb9bab4f980d6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -710,10 +709,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.15
-  m_Height: 1.03
+  m_Radius: 0.3
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.37, z: 0}
+  m_Center: {x: 0, y: 0.86, z: 0}
 --- !u!114 &5617153509751741055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,14 +727,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   runSpeed: 6
+  inputActionAsset: {fileID: -944628639613478452, guid: 4657f0158bfc575499b39c38deb6d0ef, type: 3}
   behaviour: 0
   patrolPath: {fileID: 0}
   reversePath: 0
   startAtPathIndex: 0
   sitAnimations: 000000000100000002000000
   talkAnimations: 03000000040000000500000006000000
-  turnLeftAnimations: 0700000008000000
-  turnRightAnimations: 090000000a000000
+  turnLeftAnimation: 8
+  turnRightAnimation: 10
   canHaveKey: 0
 --- !u!82 &7301023914117803354
 AudioSource:
@@ -833,25 +833,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8556436949293450763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4348457330263131141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fe6d6eabdefe0a43aa329ef2e527b36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  footStepClips:
-  - {fileID: 8300000, guid: 5d5d844d92c92e34dac8ba4b685d0d4e, type: 3}
-  - {fileID: 8300000, guid: f712af1c3ba5a16428e4c3d179539856, type: 3}
-  - {fileID: 8300000, guid: d175e97ce2ba0004ca4f903ee448dd00, type: 3}
-  - {fileID: 8300000, guid: 1eb0a3baa3d496240982499c9e451330, type: 3}
-  - {fileID: 8300000, guid: c4188c696f2de0c4cb25044f664a2a86, type: 3}
-  - {fileID: 8300000, guid: e43986b763c581f4fbc9ae2df6548a1c, type: 3}
 --- !u!1 &4549407077436855591
 GameObject:
   m_ObjectHideFlags: 0

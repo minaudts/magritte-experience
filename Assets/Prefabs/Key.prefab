@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gate: {fileID: 0}
   bridge: {fileID: 0}
+  inputActionAsset: {fileID: -944628639613478452, guid: 4657f0158bfc575499b39c38deb6d0ef, type: 3}
 --- !u!54 &4767615017445759102
 Rigidbody:
   m_ObjectHideFlags: 0

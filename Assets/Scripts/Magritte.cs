@@ -53,7 +53,6 @@ public class Magritte : Person
         {
             if(CheckIfShouldMove(hit.collider))
             {
-                Debug.Log(hit.collider.name.ToString());
                 _agent.destination = hit.point;
             }
         }
@@ -94,8 +93,8 @@ public class Magritte : Person
     // If collider is Crowdman, Pigeon, Key or ... return false
     private bool CheckIfShouldMove(Collider collider)
     {
-        return true;
-        //return !collider.GetComponent<CrowdMan>() && !collider.GetComponent<Pigeon>() && !collider.GetComponent<Key>();
+        //return true;
+        return !collider.GetComponent<CrowdMan>();
     }
 }
 

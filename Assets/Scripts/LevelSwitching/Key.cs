@@ -1,24 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using System;
+using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
-public class Key : MonoBehaviour, IPointerClickHandler
+public class Key : MonoBehaviour
 {
     [SerializeField] private IronGate gate;
     [SerializeField] private AirBridge bridge;
+    [SerializeField] InputActionAsset inputActionAsset;
+    private PlayableDirector _keyCollectedTimeline;
+    private InputAction _tapAction;
+    private InputAction _position;
     private Rigidbody _rb;
     private bool _isCollectable = false;
-    private void Awake() {
+    private void Awake()
+    {
+        _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
+        _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _rb = GetComponent<Rigidbody>();
-        if(!gate) gate = GameObject.FindObjectOfType<IronGate>();
-        if(!bridge) bridge = GameObject.FindObjectOfType<AirBridge>();
+        _keyCollectedTimeline = GameObject.FindObjectOfType<PlayableDirector>();
+        if (!gate) gate = GameObject.FindObjectOfType<IronGate>();
+        if (!bridge) bridge = GameObject.FindObjectOfType<AirBridge>();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnKeyCollected();
+        }
     }
     public void MakeCollectable(bool shouldDrop)
     {
         _isCollectable = true;
-        if(shouldDrop) OnDrop();
+        if (shouldDrop) OnDrop();
     }
 
     public void MakeUncollectable()
@@ -33,17 +48,10 @@ public class Key : MonoBehaviour, IPointerClickHandler
         _rb.AddForce(new Vector3(0, 100, 0));
         StartCoroutine(EnlargeKeyToScale(3.5f));
     }
-    public void OnPointerClick(PointerEventData eventData)
+
+    public void SetKeyCollectedTimeline(PlayableDirector timeline)
     {
-        Debug.Log("Key clicked");
-        Debug.Log(_isCollectable);
-        if (_isCollectable)
-        {
-            Debug.Log("Key collected");
-            gate.Open();
-            bridge.Appear();
-            Destroy(gameObject);
-        }
+        _keyCollectedTimeline = timeline;
     }
 
     private IEnumerator EnlargeKeyToScale(float scale)
@@ -51,10 +59,43 @@ public class Key : MonoBehaviour, IPointerClickHandler
         Vector3 targetScale = new Vector3(scale, scale, scale);
         Vector3 initialScale = transform.localScale;
         // will scale all dimensions equally
-        while(transform.localScale.magnitude < targetScale.magnitude)
+        while (transform.localScale.magnitude < targetScale.magnitude)
         {
             transform.localScale = Vector3.Lerp(initialScale, targetScale, 1);
             yield return null;
         }
+    }
+
+    public void OnTap(InputAction.CallbackContext context)
+    {
+        Vector2 screenPos = _position.ReadValue<Vector2>();
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hit, 100))
+        {
+            if (hit.collider == GetComponent<Collider>() && _isCollectable)
+            {
+                OnKeyCollected();
+            }
+        }
+    }
+
+    private void OnKeyCollected()
+    {
+        Debug.Log("Key collected");
+        if (_keyCollectedTimeline) _keyCollectedTimeline.Play();
+        gate.Open();
+        bridge.Appear();
+        Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        _tapAction.performed += OnTap;
+        _tapAction.Enable();
+        _position.Enable();
+    }
+    private void OnDisable()
+    {
+        _tapAction.performed -= OnTap;
     }
 }

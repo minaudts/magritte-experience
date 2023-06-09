@@ -22,14 +22,15 @@ public class FaceObject : MonoBehaviour
         GameObject resObj = Instantiate(faceObj, transform);
         if(resObj.GetComponent<Key>())
         {
-            resObj.transform.localPosition = new Vector3(-0.182f, 0.136f, -0.022f);
+            resObj.transform.localPosition = new Vector3(-0.06f, 0.11f, 0.01f);
             resObj.transform.localEulerAngles = new Vector3(42.151f, 99.83f, 86.276f);
             resObj.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-            GetComponentInParent<CrowdMan>().SetKey(resObj.GetComponent<Key>());
+            resObj.GetComponent<Key>().MakeCollectable(false);
+            //GetComponentInParent<CrowdMan>().SetKey(resObj.GetComponent<Key>());
         }
         if (isSitting)
         {
-            resObj.transform.localPosition = new Vector3(resObj.transform.localPosition.x, resObj.transform.localPosition.y - 0.4f, resObj.transform.localPosition.z);
+            resObj.transform.localPosition = new Vector3(resObj.transform.localPosition.x, resObj.transform.localPosition.y + 0.095f, resObj.transform.localPosition.z);
         }
     }
 
