@@ -18,6 +18,7 @@ public class ToNewScene : MonoBehaviour
 // Must match exact scene names!
 public enum PossibleScenes
 {
+    TitleScreen,
     MagritteHouse,
     PigeonDemo,
     __AppleSearchLevelDeco_BACKUP,

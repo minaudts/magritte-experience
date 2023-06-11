@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MenuCanvas : SingletonPersistent<MenuCanvas>
+
+public class MenuCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject menu;
     // Start is called before the first frame update
@@ -21,18 +19,15 @@ public class MenuCanvas : SingletonPersistent<MenuCanvas>
     }
     public void RestartGame()
     {
-        //TODO?
-        Debug.Log("Restart game");
+        SceneSwitcher.Instance.TransitionToScene(PossibleScenes.TitleScreen);
     }
 
     public void ShowMenu()
     {
         menu.SetActive(true);
-        Time.timeScale = 0;
     }
     public void HideMenu()
     {
         menu.SetActive(false);
-        Time.timeScale = 1;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.EventSystems;
 
 public class Key : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Key : MonoBehaviour
     private InputAction _position;
     private Rigidbody _rb;
     private bool _isCollectable = false;
+    private bool _hoverOverUI = false;
     private void Awake()
     {
         _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
@@ -25,6 +27,7 @@ public class Key : MonoBehaviour
     }
     private void Update()
     {
+        _hoverOverUI = EventSystem.current.IsPointerOverGameObject();
         if (Input.GetKeyDown(KeyCode.K))
         {
             OnKeyCollected();
@@ -68,6 +71,10 @@ public class Key : MonoBehaviour
 
     public void OnTap(InputAction.CallbackContext context)
     {
+        if(_hoverOverUI)
+        {
+            return;
+        }
         Vector2 screenPos = _position.ReadValue<Vector2>();
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hit, 100))

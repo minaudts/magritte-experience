@@ -26,6 +26,7 @@ public class CrowdMan : Person
     [SerializeField] private bool canHaveKey;
     private bool _isTalking = false;
     private bool _isTurning = false;
+    private bool _hoverOverUI = false;
     private List<Transform> _points;
     private int destPoint = 0;
     protected override void Awake()
@@ -58,6 +59,7 @@ public class CrowdMan : Person
     protected override void Update()
     {
         base.Update();
+        _hoverOverUI = EventSystem.current.IsPointerOverGameObject();
         if (!_isTurning && behaviour == CrowdManBehaviour.WalkAround)
         {
             WalkAroundBehaviour();
@@ -181,6 +183,10 @@ public class CrowdMan : Person
 
     public void OnTap(InputAction.CallbackContext context)
     {
+        if(_hoverOverUI)
+        {
+            return;
+        }
         Vector2 screenPos = _position.ReadValue<Vector2>();
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(screenPos), out hit, 100))

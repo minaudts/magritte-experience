@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 4f0a065658ba5aa428ba35152c767759
+  - enabled: 1
     path: Assets/Scenes/MagritteHouse.unity
     guid: 217000f35388a1846916fc4c65ebf6c5
   - enabled: 1
@@ -17,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RedLightGreenLight.unity
     guid: 2a1c2f428fea5d641b0e55e759d8ab74
-  - enabled: 1
-    path: Assets/Scenes/DodgeTheDarkness.unity
-    guid: e1722e7f717a97f458b94568eff55164
   m_configObjects: {}

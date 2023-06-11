@@ -14368,7 +14368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 0
   m_MaxRayIntersections: 0
 --- !u!81 &551187029
 AudioListener:

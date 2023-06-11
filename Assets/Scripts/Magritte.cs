@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Magritte : Person
 {
@@ -14,6 +14,7 @@ public class Magritte : Person
 
     //new
     private float playerSpeed;
+    private bool _hoverOverUI = false;
 
     protected override void Awake()
     {
@@ -23,6 +24,11 @@ public class Magritte : Person
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("DoubleTap");
         _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _respawnPoint = transform.position;
+    }
+
+    protected override void Update() {
+        base.Update();
+        _hoverOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
     private void OnWalk(InputAction.CallbackContext context)
@@ -46,6 +52,10 @@ public class Magritte : Person
 
     private void OnMove(bool doublePress)
     {
+        if(_hoverOverUI)
+        {
+            return;
+        }
         Vector2 screenPosition = _position.ReadValue<Vector2>();
         SetAgentSpeed(doublePress ? runSpeed : walkSpeed);
         RaycastHit hit;
