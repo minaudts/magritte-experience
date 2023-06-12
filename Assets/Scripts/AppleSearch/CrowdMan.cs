@@ -178,9 +178,6 @@ public class CrowdMan : Person
         yield return new WaitForSeconds(seconds);
         _isTalking = false;
     }
-
-
-
     public void OnTap(InputAction.CallbackContext context)
     {
         if(_hoverOverUI)
@@ -207,7 +204,6 @@ public class CrowdMan : Person
         
         _isTurning = true;
         _animator.SetFloat(SPEED, 0);
-        Debug.Log(Vector3.Dot(transform.forward, directionY));
         Debug.Log("Turning left");
         yield return StartCoroutine(Turn(directionY, true));
         Debug.Log("Facing camera");
@@ -227,7 +223,6 @@ public class CrowdMan : Person
         _animator.CrossFade(animationState, 0.15f, 0);
         while(Vector3.Dot(transform.forward, targetRot) < 0.95f && timeOutTimer <= 4f)
         {
-            Debug.Log(timeOutTimer);
             timeOutTimer += Time.deltaTime;
             yield return null;
         }
