@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 1813018559680917988}
   - component: {fileID: 1813018559680917989}
   - component: {fileID: 8807420733206576676}
-  - component: {fileID: 7815164387182768821}
+  - component: {fileID: 7470281273413965433}
   m_Layer: 0
   m_Name: Magritte
   m_TagString: Untagged
@@ -384,7 +384,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7815164387182768821
+--- !u!114 &7470281273413965433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -393,10 +393,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1578594234648933039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fe6d6eabdefe0a43aa329ef2e527b36, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b8d42cf1059ad142b671b605a06a51a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footStepClips:
+  audioClips:
   - {fileID: 8300000, guid: 5d5d844d92c92e34dac8ba4b685d0d4e, type: 3}
   - {fileID: 8300000, guid: f712af1c3ba5a16428e4c3d179539856, type: 3}
   - {fileID: 8300000, guid: d175e97ce2ba0004ca4f903ee448dd00, type: 3}

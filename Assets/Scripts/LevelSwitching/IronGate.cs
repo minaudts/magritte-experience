@@ -5,10 +5,12 @@ using UnityEngine;
 public class IronGate : MonoBehaviour
 {
     private Animator _animator;
+    private AudioSource _audioSource;
     [SerializeField] private float _timeDelay;
     void Awake()
     {
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
         _animator.enabled = false;
     }
 
@@ -23,5 +25,6 @@ public class IronGate : MonoBehaviour
         Debug.Log("Opening gate");
         // Will open gate as it is the default state
         _animator.enabled = true;
+        _audioSource.Play();
     }
 }

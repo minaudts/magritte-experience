@@ -11,9 +11,13 @@ public class Key : MonoBehaviour
     [SerializeField] private AirBridge bridge;
     [SerializeField] InputActionAsset inputActionAsset;
     private PlayableDirector _keyCollectedTimeline;
+    private AudioSource _audioSource;
     private InputAction _tapAction;
     private InputAction _position;
     private Rigidbody _rb;
+    private SphereCollider _collider;
+    private MeshRenderer _mesh;
+    private Outline _outline;
     private bool _isCollectable = false;
     private bool _hoverOverUI = false;
 
@@ -24,7 +28,11 @@ public class Key : MonoBehaviour
         _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
         _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _rb = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
         _keyCollectedTimeline = GameObject.FindObjectOfType<PlayableDirector>();
+        _collider = GetComponent<SphereCollider>();
+        _mesh = GetComponentInChildren<MeshRenderer>();
+        _outline = GetComponentInChildren<Outline>();
         if (!gate) gate = GameObject.FindObjectOfType<IronGate>();
         if (!bridge) bridge = GameObject.FindObjectOfType<AirBridge>();
 
@@ -91,12 +99,15 @@ public class Key : MonoBehaviour
     {
         gateLights.SetActive(true);
         Destroy(keyParticles.gameObject);
-
+        _audioSource.Play();
+        _mesh.enabled = false;
+        _collider.enabled = false;
+        _outline.enabled = false;
         Debug.Log("Key collected");
         if (_keyCollectedTimeline) _keyCollectedTimeline.Play();
         gate.Open();
         bridge.Appear();
-        Destroy(gameObject);        
+        //gameObject.SetActive(false);        
     }
 
     private void OnEnable()
@@ -107,7 +118,6 @@ public class Key : MonoBehaviour
     }
     private void OnDisable()
     {
-        Debug.Log("Disabled key");
         _tapAction.performed -= OnTap;
     }
 }
