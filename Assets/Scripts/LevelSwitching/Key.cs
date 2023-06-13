@@ -50,18 +50,12 @@ public class Key : MonoBehaviour
     {
         _isCollectable = false;
     }
-
     private void OnDrop()
     {
         transform.SetParent(null, true);
         _rb.isKinematic = false;
         _rb.AddForce(new Vector3(0, 100, 0));
         StartCoroutine(EnlargeKeyToScale(3.5f));
-    }
-
-    public void SetKeyCollectedTimeline(PlayableDirector timeline)
-    {
-        _keyCollectedTimeline = timeline;
     }
 
     private IEnumerator EnlargeKeyToScale(float scale)
@@ -113,6 +107,7 @@ public class Key : MonoBehaviour
     }
     private void OnDisable()
     {
+        Debug.Log("Disabled key");
         _tapAction.performed -= OnTap;
     }
 }

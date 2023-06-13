@@ -21,8 +21,8 @@ public enum PossibleScenes
     TitleScreen,
     MagritteHouse,
     PigeonDemo,
-    __AppleSearchLevelDeco_BACKUP,
     AppleSearchLevelDeco,
     RedLightGreenLight,
-    DodgeTheDarkness   
+    OutroCutscene,
+
 }

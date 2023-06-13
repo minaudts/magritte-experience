@@ -8,14 +8,18 @@ public class ParticlesCopyKeyLocation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-           
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        key = GameObject.FindGameObjectWithTag("Key");
-        transform.position = key.transform.position;
+        if (!key)
+        {
+            key = GameObject.FindObjectOfType<KeyGrab>().gameObject;
+            if (!key) key = GameObject.FindObjectOfType<Key>().gameObject;
+            transform.position = key.transform.position;
+        }
         //Debug.Log(key.transform.position);
     }
 }
