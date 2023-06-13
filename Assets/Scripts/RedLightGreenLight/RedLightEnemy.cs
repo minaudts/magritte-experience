@@ -32,6 +32,8 @@ public class RedLightEnemy : MonoBehaviour
     private Animator animatorRespawnFade;
 
     public GameObject centerLights;
+    public GameObject particlesSwim;
+    public GameObject particlesStone;
 
     public bool keyGrabbed;
 
@@ -116,6 +118,7 @@ public class RedLightEnemy : MonoBehaviour
 
         //new
         //FadeMaterials(matOrganic, matStone, 1);
+        particlesSwim.SetActive(false);
     }
 
     private IEnumerator RedLight() 
@@ -126,6 +129,7 @@ public class RedLightEnemy : MonoBehaviour
 
         centerLights.SetActive(false);
         fishMesh.GetComponent<Renderer>().material = matStone;
+        Instantiate(particlesStone, transform.position, transform.rotation);
     }
     private IEnumerator GreenLight()
     {
@@ -138,6 +142,7 @@ public class RedLightEnemy : MonoBehaviour
         //FadeMaterials(matStone, matOrganic, 1);
         centerLights.SetActive(true);
         fishMesh.GetComponent<Renderer>().material = matOrganic;
+        particlesSwim.SetActive(true);
     }
 
     private void FadeMaterials(Material mat1, Material mat2, float lerp)
