@@ -12,6 +12,8 @@ public class KeyGrab : MonoBehaviour
     public AirBridge airBridge;
     private Animator animatorGate;
     private AudioSource _audioSource;
+    public AudioClip pickupKey;
+    bool pickedUp = false;
 
     private void Start()
     {
@@ -22,23 +24,30 @@ public class KeyGrab : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            KeyGrabbed();
+            StartCoroutine(KeyGrabbed());
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        KeyGrabbed();
+        StartCoroutine(KeyGrabbed());
     }
-
-    private void KeyGrabbed()
+    
+    private IEnumerator KeyGrabbed()
     {
-        animatorGate.enabled = true;
-        _audioSource.Play();
-        airBridge.Appear();
-        fish.GetComponent<RedLightEnemy>().keyGrabbed = true;
-        gameObject.SetActive(false);
-        collisionGate.SetActive(false);
-        keyParticles.SetActive(false);
-        gateLights.SetActive(true);
+        if (!pickedUp)
+        {
+            pickedUp = true;
+            animatorGate.enabled = true;
+            _audioSource.PlayOneShot(pickupKey, 1f);
+            airBridge.Appear();
+            fish.GetComponent<RedLightEnemy>().keyGrabbed = true;
+            collisionGate.SetActive(false);
+            keyParticles.SetActive(false);
+            gateLights.SetActive(true);
+
+            yield return new WaitForSeconds(.5f);
+            gameObject.SetActive(false);
+        }
+        
     }
 }
