@@ -8,6 +8,8 @@ public class Magritte : Person
     private InputAction _walkAction;
     private InputAction _runAction;
     private InputAction _position;
+    private AudioSource _audioSource;
+    public AudioClip respawnAudio;
     private Camera _cam;
     public Vector3 _respawnPoint;
     //private float _velocityPreviousFrame = 0f;
@@ -24,6 +26,7 @@ public class Magritte : Person
         _runAction = inputActionAsset.FindActionMap("InGame").FindAction("DoubleTap");
         _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
         _respawnPoint = transform.position;
+        _audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Update() {
@@ -91,6 +94,8 @@ public class Magritte : Person
 
     public void Respawn()
     {
+        _audioSource.clip = respawnAudio;
+        _audioSource.Play();
         _agent.ResetPath();
         // Warp _agent back to initial point
         _agent.Warp(_respawnPoint);

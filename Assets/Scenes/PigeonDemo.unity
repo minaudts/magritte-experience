@@ -3185,6 +3185,10 @@ PrefabInstance:
       propertyPath: _objectsToActivate.Array.data[2]
       value: 
       objectReference: {fileID: 1091092966}
+    - target: {fileID: 4366062139470697079, guid: 2722a760f3d34754fa872bfbc6708da2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4393550910684920205, guid: 2722a760f3d34754fa872bfbc6708da2, type: 3}
       propertyPath: m_Name
       value: Pigeon Variant - KeyPigeon

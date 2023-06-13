@@ -126,6 +126,9 @@ public class RedLightEnemy : MonoBehaviour
         yield return StartCoroutine(RotateForDegrees(180f, true));
         //Debug.Log("Started looking");
         _isLooking = true;
+        Debug.Log(magritte.IsIdle());
+        Debug.Log(magritte.IsWalking());
+        Debug.Log(magritte.IsRunning());
 
         centerLights.SetActive(false);
         fishMesh.GetComponent<Renderer>().material = matStone;
