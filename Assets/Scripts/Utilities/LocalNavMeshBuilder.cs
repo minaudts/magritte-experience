@@ -29,11 +29,12 @@ namespace Unity.AI.Navigation.Samples
     
         IEnumerator Start()
         {
-            while (true)
+            yield return null;
+            /*while (true)
             {
                 UpdateNavMesh(true);
                 yield return m_Operation;
-            }
+            }*/
         }
     
         void OnEnable()
@@ -52,7 +53,7 @@ namespace Unity.AI.Navigation.Samples
             m_Instance.Remove();
         }
     
-        void UpdateNavMesh(bool asyncUpdate = false)
+        public void UpdateNavMesh(bool asyncUpdate = false)
         {
             NavMeshSourceTag.Collect(ref m_Sources);
             var defaultBuildSettings = NavMesh.GetSettingsByID(0);

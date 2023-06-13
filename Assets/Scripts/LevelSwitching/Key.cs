@@ -16,6 +16,9 @@ public class Key : MonoBehaviour
     private Rigidbody _rb;
     private bool _isCollectable = false;
     private bool _hoverOverUI = false;
+
+    public GameObject gateLights;
+    public GameObject keyParticles;
     private void Awake()
     {
         _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
@@ -24,6 +27,10 @@ public class Key : MonoBehaviour
         _keyCollectedTimeline = GameObject.FindObjectOfType<PlayableDirector>();
         if (!gate) gate = GameObject.FindObjectOfType<IronGate>();
         if (!bridge) bridge = GameObject.FindObjectOfType<AirBridge>();
+
+        gateLights = GameObject.Find("GateLights");
+        gateLights.SetActive(false);
+        keyParticles = GameObject.Find("KeyParticles");
     }
     private void Update()
     {
@@ -31,7 +38,7 @@ public class Key : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             OnKeyCollected();
-        }
+        }       
     }
     public void MakeCollectable(bool shouldDrop)
     {
@@ -43,18 +50,12 @@ public class Key : MonoBehaviour
     {
         _isCollectable = false;
     }
-
     private void OnDrop()
     {
         transform.SetParent(null, true);
         _rb.isKinematic = false;
         _rb.AddForce(new Vector3(0, 100, 0));
         StartCoroutine(EnlargeKeyToScale(3.5f));
-    }
-
-    public void SetKeyCollectedTimeline(PlayableDirector timeline)
-    {
-        _keyCollectedTimeline = timeline;
     }
 
     private IEnumerator EnlargeKeyToScale(float scale)
@@ -88,14 +89,14 @@ public class Key : MonoBehaviour
 
     private void OnKeyCollected()
     {
+        gateLights.SetActive(true);
+        Destroy(keyParticles.gameObject);
+
         Debug.Log("Key collected");
         if (_keyCollectedTimeline) _keyCollectedTimeline.Play();
         gate.Open();
         bridge.Appear();
-        Destroy(gameObject);
-
-        GameObject keyParticles = GameObject.Find("KeyParticles");
-        Destroy(keyParticles.gameObject);
+        Destroy(gameObject);        
     }
 
     private void OnEnable()
@@ -106,6 +107,7 @@ public class Key : MonoBehaviour
     }
     private void OnDisable()
     {
+        Debug.Log("Disabled key");
         _tapAction.performed -= OnTap;
     }
 }
