@@ -31,6 +31,8 @@ public class RedLightEnemy : MonoBehaviour
     public GameObject canvas;
     private Animator animatorRespawnFade;
 
+    public GameObject centerLights;
+
     public bool keyGrabbed;
 
     
@@ -122,6 +124,7 @@ public class RedLightEnemy : MonoBehaviour
         //Debug.Log("Started looking");
         _isLooking = true;
 
+        centerLights.SetActive(false);
         fishMesh.GetComponent<Renderer>().material = matStone;
     }
     private IEnumerator GreenLight()
@@ -133,6 +136,7 @@ public class RedLightEnemy : MonoBehaviour
 
         //new
         //FadeMaterials(matStone, matOrganic, 1);
+        centerLights.SetActive(true);
         fishMesh.GetComponent<Renderer>().material = matOrganic;
     }
 

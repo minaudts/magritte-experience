@@ -7,6 +7,8 @@ public class KeyGrab : MonoBehaviour
     public GameObject gate;
     public GameObject collisionGate;
     public GameObject fish;
+    public GameObject keyParticles;
+    public GameObject gateLights;
     private Animator animatorGate;
 
     private void Start()
@@ -19,5 +21,7 @@ public class KeyGrab : MonoBehaviour
         fish.GetComponent<RedLightEnemy>().keyGrabbed = true;
         gameObject.SetActive(false);
         collisionGate.SetActive(false);
+        keyParticles.SetActive(false);
+        gateLights.SetActive(true);
     }
 }
