@@ -93,6 +93,9 @@ public class Key : MonoBehaviour
         gate.Open();
         bridge.Appear();
         Destroy(gameObject);
+
+        GameObject keyParticles = GameObject.Find("KeyParticles");
+        Destroy(keyParticles.gameObject);
     }
 
     private void OnEnable()
