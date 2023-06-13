@@ -11,7 +11,10 @@ public class ToNewScene : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) 
     {
-        SceneSwitcher.Instance.TransitionToScene(sceneToLoad);
+        if(other.GetComponent<Magritte>())
+        {
+            SceneSwitcher.Instance.TransitionToScene(sceneToLoad);
+        }
     }
 }
 
@@ -22,7 +25,7 @@ public enum PossibleScenes
     MagritteHouse,
     PigeonDemo,
     AppleSearchLevelDeco,
-    RedLightGreenLight,
+    RedLightGreenLight_LevelDeco,
     OutroCutscene,
 
 }

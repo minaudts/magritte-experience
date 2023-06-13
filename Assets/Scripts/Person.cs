@@ -23,8 +23,7 @@ public abstract class Person : MonoBehaviour
         if(!_agent.hasPath) _agent.velocity = Vector3.zero; // om gliches te fixen
         _currentVelocity = GetVelocity();
         _animator.SetFloat("speed", _currentVelocity);
-        if ((!_agent.hasPath || _agent.remainingDistance <= 1.2f) && _currentState != MovementState.Idle) {
-            //Debug.Log("Back to idle");
+        if ((!_agent.hasPath || _agent.remainingDistance <= .5f) && _currentState != MovementState.Idle) {
             _currentState = MovementState.Idle;
         }
     }

@@ -28,7 +28,6 @@ public class RedLightEnemy : MonoBehaviour
     float fadeTime;
     public GameObject fishMesh;
 
-    public GameObject canvas;
     private Animator animatorRespawnFade;
 
     public GameObject centerLights;
@@ -53,7 +52,7 @@ public class RedLightEnemy : MonoBehaviour
 
         //new
         fadeTime = Time.time;
-        animatorRespawnFade = canvas.GetComponent<Animator>();
+        animatorRespawnFade = GameObject.FindObjectOfType<SceneSwitcher>().GetComponent<Animator>();
         animatorRespawnFade.enabled = true;
         keyGrabbed = false;
     }
@@ -66,7 +65,7 @@ public class RedLightEnemy : MonoBehaviour
             // -90f om angle the normaliseren
             //_angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
             //Debug.Log(_angleBetweenEnemyAndPlayer);
-            if (_isLooking && !magritte.IsIdle())
+            if (_isLooking && magritte.GetVelocity() > 1.5f)
             {
                 //Debug.Log("Player in sight and moving!");
                 Respawn();
@@ -132,9 +131,6 @@ public class RedLightEnemy : MonoBehaviour
         yield return StartCoroutine(RotateForDegrees(180f, true));
         //Debug.Log("Started looking");
         _isLooking = true;
-        Debug.Log(magritte.IsIdle());
-        Debug.Log(magritte.IsWalking());
-        Debug.Log(magritte.IsRunning());
 
         audioSource.PlayOneShot(fish2, .7f);
         centerLights.SetActive(false);

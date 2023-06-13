@@ -7,13 +7,14 @@ public class SceneSwitcher : SingletonPersistent<SceneSwitcher>
 {
     public Animator animator;
     private PossibleScenes sceneToLoad;
-    private void Start() 
+    private void Start()
     {
         animator.enabled = false;
     }
 
     public void TransitionToScene(PossibleScenes sceneName)
     {
+        Debug.Log("Transitioning to scene: " + sceneName.ToString());
         animator.enabled = true;
         sceneToLoad = sceneName;
         animator.SetTrigger("FadeToBlack");
