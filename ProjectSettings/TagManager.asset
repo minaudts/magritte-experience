@@ -6,6 +6,7 @@ TagManager:
   tags:
   - vcam
   - Key
+  - GateLights
   layers:
   - Default
   - TransparentFX
