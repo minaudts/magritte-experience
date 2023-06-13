@@ -34,6 +34,10 @@ public class RedLightEnemy : MonoBehaviour
     public GameObject centerLights;
     public GameObject particlesSwim;
     public GameObject particlesStone;
+    public AudioClip fish1;
+    public AudioClip fish2;
+    public AudioClip fishJump;
+    private AudioSource audioSource;
 
     public bool keyGrabbed;
 
@@ -43,6 +47,7 @@ public class RedLightEnemy : MonoBehaviour
     {
         //_mesh = GetComponent<MeshRenderer>();
         _animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         
         //_originalMaterial = _mesh.material;
 
@@ -112,12 +117,13 @@ public class RedLightEnemy : MonoBehaviour
     {
         _animator.SetBool("IsSwimming", false);
         //_mesh.material = orangeLightMaterial;
-        _animator.SetTrigger("Warning");        
+        _animator.SetTrigger("Warning");
+        audioSource.PlayOneShot(fishJump, 1f);
         yield return new WaitForSeconds(orangeLightDuration);
         //_mesh.material = _originalMaterial;
 
         //new
-        //FadeMaterials(matOrganic, matStone, 1);
+        //FadeMaterials(matOrganic, matStone, 1);       
         particlesSwim.SetActive(false);
     }
 
@@ -127,6 +133,7 @@ public class RedLightEnemy : MonoBehaviour
         //Debug.Log("Started looking");
         _isLooking = true;
 
+        audioSource.PlayOneShot(fish2, .7f);
         centerLights.SetActive(false);
         fishMesh.GetComponent<Renderer>().material = matStone;
         Instantiate(particlesStone, transform.position, transform.rotation);
@@ -134,6 +141,7 @@ public class RedLightEnemy : MonoBehaviour
     private IEnumerator GreenLight()
     {
         _isLooking = false;
+        audioSource.PlayOneShot(fish1, .7f);
         //Debug.Log("Not looking anymore");
         _animator.SetBool("IsSwimming", true);        
         yield return StartCoroutine(RotateForDegrees(180f, false));
