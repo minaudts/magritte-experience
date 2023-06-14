@@ -6,6 +6,6 @@ public class ClickToStart : MonoBehaviour
 {
     public void StartExperience()
     {
-        SceneSwitcher.Instance.TransitionToScene(PossibleScenes.MagritteHouse);
+        SceneSwitcher.Instance.TransitionToScene(PossibleScenes.Level0MagritteHouse);
     }
 }

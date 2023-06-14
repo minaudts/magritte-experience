@@ -22,10 +22,9 @@ public class ToNewScene : MonoBehaviour
 public enum PossibleScenes
 {
     TitleScreen,
-    MagritteHouse,
-    PigeonDemo,
-    AppleSearchLevelDeco,
-    RedLightGreenLight_LevelDeco,
+    Level0MagritteHouse,
+    Level1Pigeons,
+    Level2KeySearch,
+    Level3RedLightGreenLight,
     OutroCutscene,
-
 }

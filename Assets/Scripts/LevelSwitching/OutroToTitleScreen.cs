@@ -7,6 +7,6 @@ public class OutroToTitleScreen : MonoBehaviour
 {
     private void OnEnable()
     {
-        SceneManager.LoadScene("TitleScreen");
+        SceneSwitcher.Instance.TransitionToScene(PossibleScenes.TitleScreen);
     }
 }
