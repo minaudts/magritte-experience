@@ -486,7 +486,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4863576c548f0ad4f98d84fbe207d6bc, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.42
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -770,7 +770,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ceci n'est pas une exp\xE9rience..."
+  m_text: "Ceci n'est pas une exp\xE9rience."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12d0fadc292704f4b9e20ff45aa39e43, type: 2}
   m_sharedMaterial: {fileID: 1379119575414985974, guid: 12d0fadc292704f4b9e20ff45aa39e43, type: 2}
