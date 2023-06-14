@@ -65,7 +65,7 @@ public class RedLightEnemy : MonoBehaviour
             // -90f om angle the normaliseren
             //_angleBetweenEnemyAndPlayer = Vector3.SignedAngle(transform.forward, magritte.transform.position, Vector3.up) - 90f;
             //Debug.Log(_angleBetweenEnemyAndPlayer);
-            if (_isLooking && magritte.GetVelocity() > 1.5f)
+            if (_isLooking && magritte.GetVelocity() > 2.5f)
             {
                 //Debug.Log("Player in sight and moving!");
                 Respawn();
