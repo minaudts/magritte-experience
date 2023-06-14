@@ -29,6 +29,7 @@ public class CrowdMan : Person
     private bool _hoverOverUI = false;
     private List<Transform> _points;
     private int destPoint = 0;
+    private AudioSource _audioSource;
     protected override void Awake()
     {
         base.Awake();
@@ -36,6 +37,7 @@ public class CrowdMan : Person
         destPoint = startAtPathIndex;
         _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
         _position = inputActionAsset.FindActionMap("Ingame").FindAction("Position");
+        _audioSource = GetComponent<AudioSource>();
         if (behaviour == CrowdManBehaviour.WalkAround)
         {
             _points = patrolPath.GetPath();
@@ -190,6 +192,7 @@ public class CrowdMan : Person
         {
             if (hit.collider == GetComponent<Collider>() && !_isTurning && behaviour != CrowdManBehaviour.Sit && behaviour != CrowdManBehaviour.WalkAround)
             {
+                _audioSource.Play();
                 StartCoroutine(LookAtCameraAndBack());
             }
         }
