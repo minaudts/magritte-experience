@@ -9,16 +9,16 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScreen.unity
     guid: 4f0a065658ba5aa428ba35152c767759
   - enabled: 1
-    path: Assets/Scenes/MagritteHouse.unity
+    path: Assets/Scenes/Level0MagritteHouse.unity
     guid: 217000f35388a1846916fc4c65ebf6c5
   - enabled: 1
-    path: Assets/Scenes/PigeonDemo.unity
+    path: Assets/Scenes/Level1Pigeons.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/AppleSearchLevelDeco.unity
+    path: Assets/Scenes/Level2KeySearch.unity
     guid: 6f5aeb71e438e1d43bd89912a89e5d7d
   - enabled: 1
-    path: Assets/Scenes/RedLightGreenLight_LevelDeco.unity
+    path: Assets/Scenes/Level3RedLightGreenLight.unity
     guid: 4612e3dad9cd3f74fbef3e7e07aa4407
   - enabled: 1
     path: Assets/Scenes/OutroCutscene.unity
