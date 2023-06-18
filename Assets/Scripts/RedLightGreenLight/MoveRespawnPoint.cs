@@ -8,6 +8,7 @@ public class MoveRespawnPoint : MonoBehaviour
     public GameObject respawnBall;
     private bool isFirstEnter = true;
     private AudioSource audioSource;
+    public GameObject checkpointParticles;
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
     }
@@ -15,6 +16,8 @@ public class MoveRespawnPoint : MonoBehaviour
     {
         magritte.GetComponent<Magritte>()._respawnPoint = transform.position;
         respawnBall.transform.position = transform.position;
+        Instantiate(checkpointParticles, new Vector3(transform.position.x, 4.5f, transform.position.z), transform.rotation) ;
+        
         if(isFirstEnter && audioSource)
         {
             audioSource.Play();

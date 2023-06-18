@@ -45,7 +45,7 @@ public class KeyGrab : MonoBehaviour
             keyParticles.SetActive(false);
             gateLights.SetActive(true);
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.3f);
             gameObject.SetActive(false);
         }
         
