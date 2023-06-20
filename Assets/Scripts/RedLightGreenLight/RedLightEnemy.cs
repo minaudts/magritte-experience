@@ -39,6 +39,10 @@ public class RedLightEnemy : MonoBehaviour
     private AudioSource audioSource;
 
     public bool keyGrabbed;
+    public GameObject respawnCutscene;
+    private bool respawning;
+
+
 
     
 
@@ -68,7 +72,10 @@ public class RedLightEnemy : MonoBehaviour
             if (_isLooking && magritte.GetVelocity() > 2.5f)
             {
                 //Debug.Log("Player in sight and moving!");
-                Respawn();
+                if (!respawning)
+                {
+                    StartCoroutine("Respawn");
+                }               
             }
             if (_canStartNewRotation)
             {
@@ -156,11 +163,16 @@ public class RedLightEnemy : MonoBehaviour
     {
         float t = (Time.time - fadeTime) * fadeSpeed;
         fishMesh.GetComponent<Renderer>().material.Lerp(mat1, mat2, t);
-    }
-    private void Respawn()
-    {        
-        animatorRespawnFade.SetTrigger("FadeToBlack");
-        magritte.Respawn();        
-        animatorRespawnFade.SetTrigger("FadeToLevel");
+    }    
+    private IEnumerator Respawn()
+    {
+        respawning = true;
+            respawnCutscene.SetActive(true);
+            yield return new WaitForSeconds(.5f);
+            animatorRespawnFade.SetTrigger("FadeToBlack");
+            magritte.Respawn();
+            animatorRespawnFade.SetTrigger("FadeToLevel");
+        respawning = false;
+        
     }
 }

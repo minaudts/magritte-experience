@@ -23,6 +23,10 @@ public class Key : MonoBehaviour
 
     public GameObject gateLights;
     public GameObject keyParticles;
+
+    private GameObject magritte;
+    float distanceToPlayer;
+    public float minDistance = 3f;
     private void Awake()
     {
         _tapAction = inputActionAsset.FindActionMap("InGame").FindAction("Tap");
@@ -39,6 +43,8 @@ public class Key : MonoBehaviour
         gateLights = GameObject.Find("GateLights");
         gateLights.SetActive(false);
         keyParticles = GameObject.Find("KeyParticles");
+
+        magritte = GameObject.Find("Magritte");
     }
     private void Update()
     {
@@ -46,7 +52,8 @@ public class Key : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             OnKeyCollected();
-        }       
+        }
+        distanceToPlayer = Vector3.Distance(transform.position, magritte.transform.position);
     }
     public void MakeCollectable(bool shouldDrop)
     {
@@ -90,7 +97,10 @@ public class Key : MonoBehaviour
         {
             if (hit.collider == GetComponent<Collider>() && _isCollectable)
             {
-                OnKeyCollected();
+                if(distanceToPlayer < minDistance)
+                {
+                    OnKeyCollected();
+                }               
             }
         }
     }

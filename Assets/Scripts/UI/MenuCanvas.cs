@@ -24,6 +24,8 @@ public class MenuCanvas : MonoBehaviour
 
     public void ShowMenu()
     {
+        //hintPrompt.SetActive(false);
+        HintPrompt.menuOpened = true;
         menu.SetActive(true);
     }
     public void HideMenu()
