@@ -26,5 +26,6 @@ public enum PossibleScenes
     Level1Pigeons,
     Level2KeySearch,
     Level3RedLightGreenLight,
+    Level4Peashooters,
     OutroCutscene,
 }

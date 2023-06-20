@@ -42,6 +42,8 @@ public class RedLightEnemy : MonoBehaviour
     public GameObject respawnCutscene;
     private bool respawning;
 
+
+
     
 
     private void Start() 

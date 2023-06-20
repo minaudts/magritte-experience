@@ -54,7 +54,6 @@ public class Key : MonoBehaviour
             OnKeyCollected();
         }
         distanceToPlayer = Vector3.Distance(transform.position, magritte.transform.position);
-        Debug.Log(distanceToPlayer);
     }
     public void MakeCollectable(bool shouldDrop)
     {
