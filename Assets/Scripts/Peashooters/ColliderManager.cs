@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
 
 public class ColliderManager : MonoBehaviour
 {
@@ -13,6 +16,8 @@ public class ColliderManager : MonoBehaviour
     public GameObject magritte;
     float timeInDarkness;
     public float maxTimeInDarkness;
+    public GameObject vignette;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -26,10 +31,12 @@ public class ColliderManager : MonoBehaviour
         if (!isInLight)
         {            
             OutOfLight();
+            vignette.SetActive(true);
         }
         else
         {
             timeInDarkness = 0;
+            vignette.SetActive(false);
         }
         spotlightRender();
     }
