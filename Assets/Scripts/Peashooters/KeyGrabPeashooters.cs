@@ -38,8 +38,8 @@ public class KeyGrabPeashooters : MonoBehaviour
             pickedUp = true;
             animatorGate.enabled = true;
             _audioSource.PlayOneShot(pickupKey, 1f);
-            airBridge.Appear();
             collisionGate.SetActive(false);
+            airBridge.Appear();            
             keyParticles.SetActive(false);
             gateLights.SetActive(true);
 
