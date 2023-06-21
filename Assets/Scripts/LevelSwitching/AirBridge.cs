@@ -9,6 +9,7 @@ public class AirBridge : MonoBehaviour
     [SerializeField] private int _amountOfSegmentsToSpawn = 10;
     [SerializeField] private float _spawnInterval = 0.1f;
     [SerializeField] private float _spawnOffset = 2f;
+    [SerializeField] private LocalNavMeshBuilder builder;
     public void Appear()
     {
         Debug.Log("Bridge appears");
@@ -17,7 +18,7 @@ public class AirBridge : MonoBehaviour
 
     private IEnumerator SpawnSegments()
     {
-        LocalNavMeshBuilder builder = GameObject.FindObjectOfType<LocalNavMeshBuilder>();
+        builder = GameObject.FindObjectOfType<LocalNavMeshBuilder>();
 
         for (int i = 0; i < _amountOfSegmentsToSpawn; i++)
         {

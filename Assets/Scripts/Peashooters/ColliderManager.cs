@@ -18,13 +18,7 @@ public class ColliderManager : MonoBehaviour
     public float maxTimeInDarkness;
     public GameObject vignette;
    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         CheckColliders();
@@ -66,7 +60,7 @@ public class ColliderManager : MonoBehaviour
     void OutOfLight()
     {
         timeInDarkness += Time.deltaTime;
-        Debug.Log("time in darkness: " + timeInDarkness);
+        //Debug.Log("time in darkness: " + timeInDarkness);
         if(timeInDarkness > maxTimeInDarkness)
         {
             magritte.GetComponent<Magritte>().Respawn();
@@ -88,4 +82,5 @@ public class ColliderManager : MonoBehaviour
             }
         }
     }
+
 }
