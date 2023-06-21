@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class Magritte : Person
 {
+    public LayerMask ignoreTheseLayers;
     [SerializeField] InputActionAsset inputActionAsset;
     private InputAction _walkAction;
     private InputAction _runAction;
@@ -62,8 +63,9 @@ public class Magritte : Person
         Vector2 screenPosition = _position.ReadValue<Vector2>();
         SetAgentSpeed(doublePress ? runSpeed : walkSpeed);
         RaycastHit hit;
-        if (Physics.Raycast(_cam.ScreenPointToRay(screenPosition), out hit, 100))
+        if (Physics.Raycast(_cam.ScreenPointToRay(screenPosition), out hit, 100, ~ignoreTheseLayers))
         {
+
             if(CheckIfShouldMove(hit.collider))
             {
                 _agent.destination = hit.point;

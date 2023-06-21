@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1018297892}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.029087335, g: 0.0298977, b: 0.029896773, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2922,7 +2922,7 @@ GameObject:
   - component: {fileID: 70362821}
   - component: {fileID: 70362820}
   - component: {fileID: 70362819}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TriggerCheckpoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6707,7 +6707,7 @@ GameObject:
   - component: {fileID: 171296082}
   - component: {fileID: 171296081}
   - component: {fileID: 171296084}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9323,7 +9323,7 @@ GameObject:
   - component: {fileID: 288570527}
   - component: {fileID: 288570526}
   - component: {fileID: 288570525}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26352,7 +26352,7 @@ GameObject:
   - component: {fileID: 845331851}
   - component: {fileID: 845331850}
   - component: {fileID: 845331849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Trigger_ToOutro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29948,7 +29948,7 @@ GameObject:
   - component: {fileID: 940192764}
   - component: {fileID: 940192763}
   - component: {fileID: 940192766}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderSide1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35889,7 +35889,7 @@ GameObject:
   - component: {fileID: 1143044944}
   - component: {fileID: 1143044943}
   - component: {fileID: 1143044946}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderSide2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39906,7 +39906,7 @@ GameObject:
   - component: {fileID: 1269773406}
   - component: {fileID: 1269773405}
   - component: {fileID: 1269773408}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderSide4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52615,7 +52615,7 @@ GameObject:
   - component: {fileID: 1676926703}
   - component: {fileID: 1676926702}
   - component: {fileID: 1676926701}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TriggerCheckpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61712,7 +61712,7 @@ GameObject:
   - component: {fileID: 1961384037}
   - component: {fileID: 1961384036}
   - component: {fileID: 1961384039}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightColliderSide3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

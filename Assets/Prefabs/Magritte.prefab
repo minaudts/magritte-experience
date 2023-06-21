@@ -264,6 +264,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   runSpeed: 6
+  ignoreTheseLayers:
+    serializedVersion: 2
+    m_Bits: 4
   inputActionAsset: {fileID: -944628639613478452, guid: 4657f0158bfc575499b39c38deb6d0ef, type: 3}
   respawnAudio: {fileID: 8300000, guid: 420803638c5bcb14fb74dd10b923cfe0, type: 3}
   _respawnPoint: {x: 0, y: 0, z: 0}
